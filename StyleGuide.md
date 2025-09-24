@@ -15,12 +15,15 @@
     ```
 
 ## Naming conventions
-### Variables
+Variable, function and class names should be clear and concise. A longer, more descriptive name is better than a short and unclear one.
 
-### Functions
+**Variables and Functions**: `snake_case`
 
-### C
+**Classes**: `CamelCase` (note class names should be capitalized)
+
+**Constants and Global Variables**: `UPPER_SNAKE_CASE`
 
 ## Coupling & Cohesion
+We will follow [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) and [SOLID](https://en.wikipedia.org/wiki/SOLID) principles for this project
 
 ## Citations
