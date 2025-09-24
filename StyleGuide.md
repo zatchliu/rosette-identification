@@ -1,10 +1,26 @@
 # Style Guide
 *Style guide for out Rosette Idetification Project*
 
-### Comment style
+## Comment style
+### Function comments
+- All functions will have a block comment beofre the declartion of the function that specifies what the function does
 
-### Variable and function naming conventions
+### Inline comments
+- Use inline comments to explain non-obvious logic in the code
+- Place inline comments on its own line above the relavent code
+    - Example: 
+    ```
+    # This is an inline comment!
+    print("Hello world!")
+    ```
 
-### Coupling & Cohesion
+## Naming conventions
+### Variables
 
-### Citations
+### Functions
+
+### C
+
+## Coupling & Cohesion
+
+## Citations
