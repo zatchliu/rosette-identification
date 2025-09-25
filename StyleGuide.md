@@ -17,6 +17,8 @@
 ## Naming conventions
 Variable, function and class names should be clear and concise. A longer, more descriptive name is better than a short and unclear one.
 
+### Name Casing
+
 **Variables and Functions**: `snake_case`
 
 **Classes**: `CamelCase` (note class names should be capitalized)
