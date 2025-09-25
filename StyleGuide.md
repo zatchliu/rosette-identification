@@ -1,9 +1,9 @@
 # Style Guide
-*Style guide for out Rosette Idetification Project*
+*Style guide for our Rosette Idetification Project*
 
 ## Comment style
 ### Function comments
-- All functions will have a block comment beofre the declartion of the function that specifies what the function does
+- All functions will have a block comment before the declaration of the function that specifies what the function does
 
 ### Inline comments
 - Use inline comments to explain non-obvious logic in the code
@@ -15,7 +15,7 @@
     ```
 
 ## Naming conventions
-Variable, function and class names should be clear and concise. A longer, more descriptive name is better than a short and unclear one.
+Variable, function, and class names should be clear and concise. A longer, more descriptive name is better than a short and unclear one.
 
 ### Name Casing
 
@@ -26,6 +26,8 @@ Variable, function and class names should be clear and concise. A longer, more d
 **Constants and Global Variables**: `UPPER_SNAKE_CASE`
 
 ## Coupling & Cohesion
-We will follow [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) and [SOLID](https://en.wikipedia.org/wiki/SOLID) principles for this project
+We will follow [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) coding principles and [SOLID](https://en.wikipedia.org/wiki/SOLID) for any object-oriented design in this project
 
-## Citations
+## Other References
+[Google Style Guide](https://google.github.io/styleguide/)
+[Python PEP 8](https://peps.python.org/pep-0008/)
