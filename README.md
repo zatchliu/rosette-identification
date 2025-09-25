@@ -5,4 +5,4 @@
 - **zatchliu**: Zachary Liu
 - **therevboss**: Oliver Wyner
 
-### [Style Guide](/rosette-identification/StyleGuide.md)
+### [Style Guide](/StyleGuide.md)
