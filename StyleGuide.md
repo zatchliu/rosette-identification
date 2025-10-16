@@ -1,5 +1,5 @@
 # Style Guide
-*Style guide for our Rosette Idetification Project*
+*Style guide for our Rosette Identification Project*
 
 ## Comment style
 ### Function comments
@@ -24,6 +24,37 @@ Variable, function, and class names should be clear and concise. A longer, more 
 **Classes**: `CamelCase` (note class names should be capitalized)
 
 **Constants and Global Variables**: `UPPER_SNAKE_CASE`
+
+## Branching
+### Branch Names
+Branch names should adhere to the following format: **ISSUE_NUMBER-FEATURE_NAME**
+Example:
+`1-image-input-and-preprocessing`
+
+Like naming conventions for variables and class, branch names should be clear and concise.
+
+This is also the default branch naming style in Github if you create a branch off an issue, with the feature name being the name of the issue.
+
+### Branch Creation Norms
+- Create a new branch for each independent feature or substantial change.
+- Base new branches off `main` unless coordinating off another active feature explicitly.
+- Keep branches focused and short-lived; prefer multiple small PRs over one very large PR.
+
+### Commit Message Norms
+- Write clear, imperative commit messages. Make sure to include context when helpful.
+
+### Pull Request and Merge Conditions
+- Open a PR from your feature branch into `main` when the feature is complete.
+- Requirements to merge:
+  - All checks pass (formatting, linting, tests).
+  - At least one reviewer approval.
+  - No unresolved review comments.
+  - Branch is up-to-date with `main`
+
+### Testing Norms
+- Add or update unit tests alongside code changes.
+- Maintain or improve test coverage for touched areas.
+
 
 ## Coupling & Cohesion
 We will follow [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) coding principles and [SOLID](https://en.wikipedia.org/wiki/SOLID) for any object-oriented design in this project
