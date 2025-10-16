@@ -3,6 +3,7 @@ class ImageInput:
         """
         Initialize the ImageInput object.
         """
+        print("test")
         pass
 
     def get_image(self, image_path):
