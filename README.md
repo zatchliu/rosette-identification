@@ -27,7 +27,7 @@ More information [here](https://www.python.org/downloads/)
     - Navigate to your favorite command line interface (CLI)
     - Run the following command:
 
-        `git clone YOUR-GIT-WEB-URL-HERE`
+        `git clone YOUR-GIT-WEB-URL`
 
 2. Navigate into the repo on your machine with this command:
 
@@ -66,3 +66,16 @@ Analysis pipeline completed!
    `PYTHONPATH=. python -m pytest tests/YOUR_TEST_FILENAME.py`
 
 ***(More to come in this section in the future!)***
+
+### Testing
+1. To run tests make sure you are in the root directory for this project
+
+    Example: `zacharyliu@ZachsLaptop:~/comp333/rosette-identification$`
+   
+3. Run the following command:
+
+   `PYTHONPATH=. python -m pytest tests/YOUR_TEST_FILENAME.py`
+
+***(More to come in this section in the future!)***
+
+
