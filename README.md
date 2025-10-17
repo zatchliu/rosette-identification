@@ -36,9 +36,9 @@ More information [here](https://www.python.org/downloads/)
 
     `cd src`
 
-4. Run the `__init__.py` file with the following command:
+4. Run the `app.py` file with the following command:
 
-    `python __init__.py`
+    `python app.py`
 
 The output should be the following:
 
