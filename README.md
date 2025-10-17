@@ -54,18 +54,11 @@ Analysis pipeline completed!
 (This is a mockup - actual implementation coming soon)
 ```
 
-***(More to come in this section in the future!)***
-
-### Testing
-1. To run tests make sure you are in the root directory for this project
-
-    Example: `zacharyliu@ZachsLaptop:~/comp333/rosette-identification$`
-   
-3. Run the following command:
-
-   `PYTHONPATH=. python -m pytest tests/YOUR_TEST_FILENAME.py`
 
 ***(More to come in this section in the future!)***
+
+
+
 
 ### Testing
 1. To run tests make sure you are in the root directory for this project
