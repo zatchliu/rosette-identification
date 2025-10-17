@@ -27,16 +27,19 @@ More information [here](https://www.python.org/downloads/)
 
         `git clone YOUR-GIT-WEB-URL-HERE`
 
-2. Navigate into the repo on your machine
+2. Navigate into the repo on your machine with this command:
+
+   `cd YOUR_PATH_HERE`
+   
     - Your path should look something like the following:
 
     `zacharyliu@ZachsLaptop:~/comp333/rosette-identification$`
 
-3. Navigate into the source code folder with this command:
+4. Navigate into the source code folder with this command:
 
     `cd src`
 
-4. Run the `app.py` file with the following command:
+5. Run the `app.py` file with the following command:
 
     `python app.py`
 
