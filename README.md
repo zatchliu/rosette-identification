@@ -25,7 +25,7 @@ More information [here](https://www.python.org/downloads/)
     - Navigate to your favorite command line interface (CLI)
     - Run the following command:
 
-        `git clone your-git-web-url-here`
+        `git clone YOUR-GIT-WEB-URL-HERE`
 
 2. Navigate into the repo on your machine
     - Your path should look something like the following:
