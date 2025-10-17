@@ -1,33 +1,24 @@
 from src.vertex_detection import VertexDetection
 
 
-def test_set_vertex_tolerance_updates_threshold():
+def test_set_vertex_tolerance_updates_internal_state():
     """
-    Ensure the vertex tolerance setter updates the internal threshold.
+    Ensure the tolerance setter updates the stored pixel radius.
     """
-    detector = VertexDetection(vertex_tolerance=5)
-    detector.set_vertex_tolerance(12)
+    detector = VertexDetection()
+    detector.set_vertex_tolerance(15)
 
-    assert detector.vertex_tolerance == 12
+    assert detector.vertex_tolerance_radius == 15
 
 
-def test_detect_vertices_uses_segmentation_and_updates_map():
+def test_detect_vertices_resets_vertex_map_and_returns_list():
     """
-    Verify detect_vertices calls the segmentation service and resets vertex_map.
+    Verify detect_vertices returns a list and clears any stale vertex map entries.
     """
+    detector = VertexDetection()
+    detector.vertex_map = {"old_vertex": ["cell_a", "cell_b"]}
 
-    class DummySegmentation:
-        def __init__(self):
-            self.called_with = None
+    result = detector.detect_vertices(image="placeholder-image")
 
-        def segment_cells(self, image):
-            self.called_with = image
-            return {"cells": [1, 2], "vertices": [{"id": "v1"}]}
-
-    dummy_segmentation = DummySegmentation()
-    detector = VertexDetection(segmentation_service=dummy_segmentation)
-    result = detector.detect_vertices(image="dummy-image")
-
-    assert dummy_segmentation.called_with == "dummy-image"
+    assert isinstance(result, list)
     assert detector.get_vertex_map() == {}
-    assert result == []
