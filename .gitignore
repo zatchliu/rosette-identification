@@ -1,4 +1,5 @@
-./rosette
+# Local virtual environment
+/rosette/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
