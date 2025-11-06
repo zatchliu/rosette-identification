@@ -1,4 +1,6 @@
 # Rosette Identification
+### **We are using 2 grace days for milestone 3**
+
 This is a project for COMP 333 in collaboration with the Mitchel lab. 
 
 ## Team Members
