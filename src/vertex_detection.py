@@ -1,98 +1,73 @@
-class VertexDetection:
-    def __init__(self, min_neighbors_for_rosette=5, vertex_tolerance_radius=10, cell_segmentation_data=None):
-        """
-        Initialize placeholder configuration for vertex detection.
+"""
+Vertex Detection Module
 
-        Args:
-            min_neighbors_for_rosette (int): Minimum number of cells that define a rosette.
-            vertex_tolerance_radius (int): Pixel radius used when checking vertex proximity.
-            cell_segmentation_data: Optional dependency that provides cell segmentation data.
-        """
-        self.min_neighbors_for_rosette = min_neighbors_for_rosette
-        self.vertex_tolerance_radius = vertex_tolerance_radius
-        self.cell_segmentation_data = cell_segmentation_data
-        self.vertex_map = {}
+This module identifies vertices where multiple cells meet at common points.
+It samples candidate locations and determines which points have enough nearby
+cell boundaries to qualify as vertices.
+"""
 
-    def detect_vertices(self, image):
-        """
-        Skeleton implementation that will eventually analyze an image to find vertices.
+import numpy as np
 
-        Args:
-            image: Placeholder for future image data input.
 
-        Returns:
-            list: Empty list to represent detected vertices.
-        """
-        segmentation_output = self._get_segmentation_output(image)
-        candidate_vertices = self._extract_vertices(segmentation_output)
-        self.vertex_map = self._build_vertex_cell_map(candidate_vertices)
-        return list(self.vertex_map.keys())
-
-    def set_vertex_tolerance(self, pixel_radius):
-        """
-        Placeholder method to customize acceptable vertex proximity.
-
-        Args:
-            pixel_radius (int): New tolerance threshold for vertex grouping.
+def find_vertices(valid_cells, cell_boundaries, mask, vertex_radius, min_cells):
+    """
+    Identify vertices where multiple cells meet at a common point.
+    
+    This function samples points in the image and checks how many cell boundaries
+    are within vertex_radius of each point. Points where min_cells or more cells
+    meet are considered vertices.
+    
+    Args:
+        valid_cells: List of valid cell IDs
+        cell_boundaries: Dictionary mapping cell_id to boundary coordinates
+        mask: Segmentation mask array
+        vertex_radius: Search radius for nearby cells (pixels)
+        min_cells: Minimum cells required to form a vertex
+        
+    Returns:
+        List of vertex dictionaries containing location, cells, and num_cells
+    """
+    print("\n" + "="*70)
+    print("STEP 3: IDENTIFYING VERTICES WHERE CELLS MEET")
+    print("="*70)
+    
+    vertices = []
+    
+    # Create a grid of candidate vertex points
+    y_coords, x_coords = np.where(mask > 0)
+    sample_points = np.column_stack([y_coords, x_coords])
+    
+    # Sample every Nth point to speed up computation
+    sample_stride = max(1, len(sample_points) // 10000) 
+    sample_points = sample_points[::sample_stride]
+    
+    print(f"Searching {len(sample_points)} candidate vertex locations...")
+    
+    # Check each candidate point
+    for point in sample_points:
+        y, x = point
+        
+        # Find all cells within vertex_radius of this point
+        cells_near_point = []
+        
+        for cell_id in valid_cells:
+            boundaries = cell_boundaries[cell_id]
             
-        Returns:
-            None
-        """
-        self.vertex_tolerance_radius = pixel_radius
-
-    def get_vertex_map(self):
-        """
-        Retrieve the placeholder vertex-to-cell mapping structure.
-
-        Args:
-            None
-
-        Returns:
-            dict: Mapping of vertex identifiers to lists of neighboring cell ids.
-        """
-        return self.vertex_map
-
-    def _get_segmentation_output(self, image):
-        """
-        Placeholder helper to request segmentation data.
-
-        Args:
-            image: Placeholder image input.
-
-        Returns:
-            dict: Empty segmentation representation.
-        """
-
-        # Placeholder to avoid unused variable warning
-        _ = image  
-        if self.cell_segmentation_data and hasattr(self.cell_segmentation_data, "segment_cells"):
-            return self.cell_segmentation_data.segment_cells(image)
-        return {"cells": [], "vertices": []}
-
-    def _extract_vertices(self, segmentation_output):
-        """
-        Placeholder helper to derive vertex candidates from segmentation output.
-
-        Args:
-            segmentation_output (dict): Placeholder segmentation data.
-
-        Returns:
-            list: Empty list of vertices.
-        """
-        # Placeholder to avoid unused variable warning
-        _ = segmentation_output  
-        return []
-
-    def _build_vertex_cell_map(self, vertices):
-        """
-        Placeholder helper to store vertex membership information.
-
-        Args:
-            vertices (list): Placeholder list of vertex candidates.
-
-        Returns:
-            dict: Empty mapping between vertex ids and cell ids.
-        """
-        # Placeholder to avoid unused variable warning
-        _ = vertices  
-        return {}
+            # Calculate minimum distance from point to cell boundary
+            distances = np.sqrt(np.sum((boundaries - point)**2, axis=1))
+            min_dist = np.min(distances)
+            
+            if min_dist <= vertex_radius:
+                cells_near_point.append(cell_id)
+        
+        # If enough cells meet here, record as vertex
+        if len(cells_near_point) >= min_cells:
+            vertices.append({
+                'location': (x, y),
+                'cells': cells_near_point,
+                'num_cells': len(cells_near_point)
+            })
+    
+    print(f"Found {len(vertices)} candidate vertices")
+    
+    return vertices
