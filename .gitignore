@@ -1,6 +1,3 @@
-# Local virtual environment
-/rosette/
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -180,10 +177,3 @@ Desktop.ini
 
 # Project specific
 # Add any project-specific files or directories to ignore here
-
-# Temporary uploads or test images
-uploads/
-tmp/
-logs/
-*.tmp
-
