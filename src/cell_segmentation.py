@@ -1,46 +1,24 @@
 class CellSegmentation:
-    def __init__(self, image):
+    def __init__(self):
         """
         Initialize the CellSegmentation object.
         """
-        self.image = image
-        self.cell_images = []
-        self.cell_count = 0
-        self.cell_centers = []
-        self.cell_areas = []
+        pass
 
-    def segment_cells(self):
+    def segment_cells(self, image):
         """
         Segment the cells in the image.
-
-        Args:
-            image: The image to segment the cells from.
-
-        Returns:
-            The segmented cells.
         """
-        return self.cell_images
+        pass
 
-    def get_cell_count(self):
+    def get_cell_count(self, image):
         """
         Get the number of cells in the image.
-
-        Args:
-            image: The image to get the number of cells from.
-
-        Returns:
-            The number of cells in the image.
         """
-        return self.cell_count
+        pass
 
-    def get_cell_centers(self):
+    def get_cell_centers(self, image):
         """
         Get the centers of the cells in the image.
-
-        Args:
-            image: The image to get the centers of the cells from.
-
-        Returns:
-            The centers of the cells in the image.
         """
-        return self.cell_centers
+        pass
