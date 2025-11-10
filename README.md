@@ -1,8 +1,68 @@
-# rosette-identification
+# Rosette Identification
+### **We are using 2 grace days for milestone 3**
 
-### Team Members
+This is a project for COMP 333 in collaboration with the Mitchel lab. 
+
+## Team Members
 - **braeden-falzarano**: Braeden Falzarano
 - **zatchliu**: Zachary Liu
 - **therevboss**: Oliver Wyner
 
-### [Style Guide](/StyleGuide.md)
+## [Style Guide](/StyleGuide.md)
+
+## Getting Started
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+
+### Prerequisites
+Make sure to have Python installed on your machine
+More information [here](https://www.python.org/downloads/) 
+
+***(More to come in this section in the future!)***
+
+### Installing
+1. Clone this repo to your local machine
+    - Click the green 'Code' button at the top right of this page
+    - Make sure HTTPS is selected
+    - Copy the web url
+    - Navigate to your favorite command line interface (CLI)
+    - Run the following command:
+
+        `git clone YOUR-GIT-WEB-URL-HERE`
+
+2. Navigate into the repo on your machine with this command:
+
+   `cd YOUR_PATH_HERE`
+   
+    - Your path should look something like the following:
+
+    `zacharyliu@ZachsLaptop:~/comp333/rosette-identification$`
+
+4. Navigate into the source code folder with this command:
+
+    `cd src`
+
+5. Run the `app.py` file with the following command:
+
+    `python app.py`
+
+The output should be the following:
+
+```
+Rosette Identification Toolkit
+==================================================
+Analysis pipeline completed!
+(This is a mockup - actual implementation coming soon)
+```
+
+***(More to come in this section in the future!)***
+
+### Testing
+1. To run tests make sure you are in the root directory for this project
+
+    Example: `zacharyliu@ZachsLaptop:~/comp333/rosette-identification$`
+   
+3. Run the following command:
+
+   `PYTHONPATH=. python -m pytest tests/YOUR_TEST_FILENAME.py`
+
+***(More to come in this section in the future!)***
