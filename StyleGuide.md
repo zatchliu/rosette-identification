@@ -3,7 +3,19 @@
 
 ## Comment style
 ### Function comments
-- All functions will have a block comment before the declaration of the function that specifies what the function does
+- All functions will have a block comment inside the header of the function that specifies what the function does
+    - Exmaple:
+    ```
+    def foo(bar):
+        """
+        This is an example of a function comment!
+        Args: 
+            bar
+        Returns:
+            None
+        """
+        return None
+    ```
 
 ### Inline comments
 - Use inline comments to explain non-obvious logic in the code
