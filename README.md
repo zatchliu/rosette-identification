@@ -213,16 +213,16 @@ This is normal for Windows - it will use CPU mode.
 
 ### Step 1: Make Sure Your Virtual Environment is Active
 
-You should see `(rosette_env)` at the start of your command line. If not:
+You should see `(rosette)` at the start of your command line. If not:
 
 **Mac:**
 ```bash
-source rosette_env/bin/activate
+source rosette/bin/activate
 ```
 
 **Windows:**
 ```cmd
-rosette_env\Scripts\activate
+rosette\Scripts\activate
 ```
 
 ### Step 2: Run the Detection
