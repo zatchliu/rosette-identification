@@ -17,11 +17,11 @@
         return None
     ```
 
-    **Note:** For this project we don't need to stricly follow this format for the function comments (including Args, Returns, etc), as long there is a sufficient decription of the function
+    **Note:** For this project, we don't need to strictly follow this format for the function comments (including Args, Returns, etc), as long as there is a sufficient description of the function
 
 ### Inline comments
 - Use inline comments to explain non-obvious logic in the code
-- Place inline comments on its own line above the relavent code
+- Place inline comments on their own line above the relevant code
     - Example: 
     ```
     # This is an inline comment!
@@ -45,9 +45,9 @@ Branch names should adhere to the following format: **ISSUE_NUMBER-FEATURE_NAME*
 Example:
 `1-image-input-and-preprocessing`
 
-Like naming conventions for variables and class, branch names should be clear and concise.
+Like naming conventions for variables and classes, branch names should be clear and concise.
 
-This is also the default branch naming style in Github if you create a branch off an issue, with the feature name being the name of the issue.
+This is also the default branch naming style in GitHub if you create a branch off an issue, with the feature name being the name of the issue.
 
 ### Branch Creation Norms
 - Create a new branch for each independent feature or substantial change.
@@ -66,8 +66,23 @@ This is also the default branch naming style in Github if you create a branch of
   - Branch is up-to-date with `main`
 
 ### Testing Norms
-- Add or update unit tests alongside code changes.
-- Maintain or improve test coverage for touched areas.
+- Testing is done with visual output.
+- There are no annotated cell images to officially test "correctness" with, so visual testing is the best option currently.
+
+## HTML/JavaScript Code Style
+
+The interactive visualization uses embedded HTML/JavaScript in `src/rosette_detection.py`.
+
+**JavaScript:**
+- Use `const` and `let` (no `var`)
+- camelCase for variables and functions
+- Add descriptive comments for complex functions
+- Keep functions focused on single tasks
+
+**HTML/CSS:**
+- Use semantic HTML5 elements
+- Semantic class/id names
+- Group related CSS properties
 
 
 ## Coupling & Cohesion
