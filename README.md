@@ -87,7 +87,7 @@ cd rosette-identification
 A virtual environment is like a separate workspace for this project.
 
 ```bash
-python3 -m venv rosette
+python -m venv rosette
 ```
 
 This creates a virtual environment called `rosette` that contains all the software this project needs.
