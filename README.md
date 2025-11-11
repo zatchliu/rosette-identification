@@ -163,15 +163,15 @@ cd rosette-identification
 Link to miniconda installation instrutions [here](https://www.anaconda.com/docs/getting-started/miniconda/install)
 
 ```cmd
-conda create -n rosette_env python=3.10 -y
+conda create -n rosette python=3.10 -y
 ```
 
 #### Step 5: Activate the Virtual Environment
 ```cmd
-conda activate rosette_env
+conda activate rosette
 ```
 
-You'll see `(rosette_env)` appear at the start of your command line.
+You'll see `(rosette)` appear at the start of your command line.
 
 #### Step 6: Install Required Software
 
@@ -451,7 +451,7 @@ python tests/test_rosette_detection.py
 ### Problem: "ModuleNotFoundError: No module named 'cellpose'"
 
 **Solution:**
-- Make sure your virtual environment is activated (you should see `(rosette_env)` in your terminal)
+- Make sure your virtual environment is activated (you should see `(rosette)` in your terminal)
 - Run the pip install commands again
 
 ### Problem: "zsh: no matches found: cellpose[gui]" (Mac only)
