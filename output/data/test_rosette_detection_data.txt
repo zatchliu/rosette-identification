@@ -1,0 +1,830 @@
+ROSETTE DETECTION TEST RESULTS
+================================================================================
+Parameters:
+  Cell diameter: 30
+  Min cell area: 100
+  Max cell area: 5000
+  Vertex radius: 15
+  Min cells for rosette: 5
+
+Results:
+  Total cells: 1417
+  Total rosettes: 163
+
+================================================================================
+
+Rosette 1:
+  Center: (1367, 9)
+  Number of cells: 5
+  Cell IDs: [50, 51, 20, 21, 61]
+
+Rosette 2:
+  Center: (40, 36)
+  Number of cells: 7
+  Cell IDs: [1, 2, 69, 80, 27, 28, 94]
+
+Rosette 3:
+  Center: (212, 35)
+  Number of cells: 5
+  Cell IDs: [66, 67, 74, 29, 30]
+
+Rosette 4:
+  Center: (1785, 36)
+  Number of cells: 5
+  Cell IDs: [96, 68, 58, 25, 90]
+
+Rosette 5:
+  Center: (1731, 45)
+  Number of cells: 5
+  Cell IDs: [96, 68, 78, 85, 57]
+
+Rosette 6:
+  Center: (1116, 64)
+  Number of cells: 7
+  Cell IDs: [128, 105, 45, 46, 79, 118, 119]
+
+Rosette 7:
+  Center: (303, 66)
+  Number of cells: 5
+  Cell IDs: [32, 33, 133, 106, 91]
+
+Rosette 8:
+  Center: (538, 68)
+  Number of cells: 5
+  Cell IDs: [121, 84, 117, 87, 89]
+
+Rosette 9:
+  Center: (845, 78)
+  Number of cells: 8
+  Cell IDs: [131, 39, 40, 76, 113, 83, 148, 127]
+
+Rosette 10:
+  Center: (1010, 72)
+  Number of cells: 5
+  Cell IDs: [42, 107, 108, 44, 125]
+
+Rosette 11:
+  Center: (1675, 87)
+  Number of cells: 6
+  Cell IDs: [134, 141, 78, 142, 85, 93]
+
+Rosette 12:
+  Center: (1862, 96)
+  Number of cells: 5
+  Cell IDs: [137, 81, 145, 152, 124]
+
+Rosette 13:
+  Center: (866, 93)
+  Number of cells: 9
+  Cell IDs: [131, 39, 40, 76, 113, 114, 146, 148, 127]
+
+Rosette 14:
+  Center: (59, 103)
+  Number of cells: 5
+  Cell IDs: [136, 172, 173, 80, 94]
+
+Rosette 15:
+  Center: (325, 127)
+  Number of cells: 6
+  Cell IDs: [129, 133, 166, 112, 178, 180]
+
+Rosette 16:
+  Center: (804, 133)
+  Number of cells: 6
+  Cell IDs: [192, 169, 113, 148, 190, 127]
+
+Rosette 17:
+  Center: (1103, 163)
+  Number of cells: 5
+  Cell IDs: [128, 210, 181, 184, 223]
+
+Rosette 18:
+  Center: (63, 167)
+  Number of cells: 5
+  Cell IDs: [173, 212, 182, 188, 221]
+
+Rosette 19:
+  Center: (781, 177)
+  Number of cells: 5
+  Cell IDs: [192, 230, 205, 190, 222]
+
+Rosette 20:
+  Center: (915, 185)
+  Number of cells: 8
+  Cell IDs: [226, 196, 234, 207, 241, 146, 217, 187]
+
+Rosette 21:
+  Center: (13, 199)
+  Number of cells: 5
+  Cell IDs: [238, 177, 245, 246, 188]
+
+Rosette 22:
+  Center: (199, 204)
+  Number of cells: 5
+  Cell IDs: [174, 239, 208, 240, 251]
+
+Rosette 23:
+  Center: (820, 225)
+  Number of cells: 6
+  Cell IDs: [288, 260, 205, 217, 282, 219]
+
+Rosette 24:
+  Center: (1303, 243)
+  Number of cells: 8
+  Cell IDs: [228, 231, 265, 266, 297, 237, 308, 283]
+
+Rosette 25:
+  Center: (836, 244)
+  Number of cells: 8
+  Cell IDs: [288, 260, 325, 307, 279, 217, 282, 219]
+
+Rosette 26:
+  Center: (1261, 265)
+  Number of cells: 5
+  Cell IDs: [321, 266, 305, 340, 283]
+
+Rosette 27:
+  Center: (767, 278)
+  Number of cells: 5
+  Cell IDs: [356, 260, 324, 343, 282]
+
+Rosette 28:
+  Center: (1615, 293)
+  Number of cells: 5
+  Cell IDs: [357, 298, 330, 364, 277]
+
+Rosette 29:
+  Center: (887, 294)
+  Number of cells: 5
+  Cell IDs: [353, 326, 302, 307, 316]
+
+Rosette 30:
+  Center: (1508, 307)
+  Number of cells: 6
+  Cell IDs: [323, 361, 304, 371, 375, 311]
+
+Rosette 31:
+  Center: (200, 303)
+  Number of cells: 5
+  Cell IDs: [291, 292, 367, 339, 348]
+
+Rosette 32:
+  Center: (294, 358)
+  Number of cells: 10
+  Cell IDs: [452, 453, 394, 433, 403, 372, 437, 409, 347, 412]
+
+Rosette 33:
+  Center: (1346, 348)
+  Number of cells: 5
+  Cell IDs: [358, 422, 359, 426, 380]
+
+Rosette 34:
+  Center: (1800, 349)
+  Number of cells: 5
+  Cell IDs: [421, 336, 402, 374, 413]
+
+Rosette 35:
+  Center: (584, 360)
+  Number of cells: 6
+  Cell IDs: [420, 390, 366, 399, 443, 446]
+
+Rosette 36:
+  Center: (819, 351)
+  Number of cells: 5
+  Cell IDs: [395, 427, 398, 436, 379]
+
+Rosette 37:
+  Center: (644, 378)
+  Number of cells: 5
+  Cell IDs: [386, 420, 464, 468, 414]
+
+Rosette 38:
+  Center: (861, 379)
+  Number of cells: 5
+  Cell IDs: [419, 395, 462, 436, 469]
+
+Rosette 39:
+  Center: (1015, 384)
+  Number of cells: 5
+  Cell IDs: [416, 463, 470, 477, 415]
+
+Rosette 40:
+  Center: (292, 370)
+  Number of cells: 12
+  Cell IDs: [452, 453, 476, 394, 461, 433, 403, 372, 437, 409, 347, 412]
+
+Rosette 41:
+  Center: (1560, 396)
+  Number of cells: 5
+  Cell IDs: [481, 484, 361, 435, 499]
+
+Rosette 42:
+  Center: (1504, 401)
+  Number of cells: 5
+  Cell IDs: [481, 471, 434, 498, 375]
+
+Rosette 43:
+  Center: (1399, 411)
+  Number of cells: 5
+  Cell IDs: [422, 429, 495, 496, 466]
+
+Rosette 44:
+  Center: (767, 418)
+  Number of cells: 5
+  Cell IDs: [515, 518, 427, 465, 509]
+
+Rosette 45:
+  Center: (663, 428)
+  Number of cells: 5
+  Cell IDs: [513, 464, 468, 505, 538]
+
+Rosette 46:
+  Center: (906, 436)
+  Number of cells: 5
+  Cell IDs: [488, 520, 530, 531, 469]
+
+Rosette 47:
+  Center: (274, 443)
+  Number of cells: 5
+  Cell IDs: [452, 461, 533, 536, 476]
+
+Rosette 48:
+  Center: (1392, 448)
+  Number of cells: 5
+  Cell IDs: [521, 553, 495, 496, 534]
+
+Rosette 49:
+  Center: (587, 454)
+  Number of cells: 5
+  Cell IDs: [554, 527, 468, 540, 446]
+
+Rosette 50:
+  Center: (843, 476)
+  Number of cells: 10
+  Cell IDs: [609, 515, 519, 584, 588, 462, 591, 530, 563, 567]
+
+Rosette 51:
+  Center: (711, 460)
+  Number of cells: 5
+  Cell IDs: [486, 552, 558, 505, 509]
+
+Rosette 52:
+  Center: (951, 466)
+  Number of cells: 5
+  Cell IDs: [520, 585, 560, 528, 565]
+
+Rosette 53:
+  Center: (1852, 493)
+  Number of cells: 5
+  Cell IDs: [610, 615, 562, 500, 564]
+
+Rosette 54:
+  Center: (340, 495)
+  Number of cells: 5
+  Cell IDs: [581, 613, 524, 624, 575]
+
+Rosette 55:
+  Center: (637, 500)
+  Number of cells: 6
+  Cell IDs: [614, 617, 554, 633, 538, 603]
+
+Rosette 56:
+  Center: (1230, 508)
+  Number of cells: 5
+  Cell IDs: [578, 612, 559, 561, 632]
+
+Rosette 57:
+  Center: (1173, 509)
+  Number of cells: 5
+  Cell IDs: [578, 621, 596, 632, 543]
+
+Rosette 58:
+  Center: (20, 517)
+  Number of cells: 5
+  Cell IDs: [577, 583, 650, 619, 597]
+
+Rosette 59:
+  Center: (486, 517)
+  Number of cells: 5
+  Cell IDs: [576, 641, 557, 628, 637]
+
+Rosette 60:
+  Center: (1073, 519)
+  Number of cells: 5
+  Cell IDs: [642, 646, 586, 595, 604]
+
+Rosette 61:
+  Center: (1719, 522)
+  Number of cells: 6
+  Cell IDs: [611, 618, 630, 568, 539, 635]
+
+Rosette 62:
+  Center: (1780, 523)
+  Number of cells: 5
+  Cell IDs: [640, 589, 653, 630, 574]
+
+Rosette 63:
+  Center: (105, 528)
+  Number of cells: 5
+  Cell IDs: [551, 649, 626, 660, 598]
+
+Rosette 64:
+  Center: (1456, 533)
+  Number of cells: 5
+  Cell IDs: [651, 620, 622, 659, 600]
+
+Rosette 65:
+  Center: (1530, 542)
+  Number of cells: 6
+  Cell IDs: [676, 651, 683, 601, 573, 639]
+
+Rosette 66:
+  Center: (843, 548)
+  Number of cells: 5
+  Cell IDs: [609, 588, 656, 669, 670]
+
+Rosette 67:
+  Center: (154, 554)
+  Number of cells: 5
+  Cell IDs: [579, 649, 685, 623, 660]
+
+Rosette 68:
+  Center: (1807, 568)
+  Number of cells: 5
+  Cell IDs: [640, 705, 708, 653, 691]
+
+Rosette 69:
+  Center: (588, 571)
+  Number of cells: 5
+  Cell IDs: [673, 614, 719, 725, 671]
+
+Rosette 70:
+  Center: (62, 570)
+  Number of cells: 5
+  Cell IDs: [704, 616, 650, 688, 626]
+
+Rosette 71:
+  Center: (541, 578)
+  Number of cells: 6
+  Cell IDs: [709, 645, 724, 725, 637, 671]
+
+Rosette 72:
+  Center: (1536, 571)
+  Number of cells: 10
+  Cell IDs: [737, 676, 679, 651, 683, 684, 639, 601, 702, 735]
+
+Rosette 73:
+  Center: (661, 580)
+  Number of cells: 5
+  Cell IDs: [675, 710, 720, 657, 730]
+
+Rosette 74:
+  Center: (375, 583)
+  Number of cells: 5
+  Cell IDs: [674, 712, 723, 698, 607]
+
+Rosette 75:
+  Center: (1013, 582)
+  Number of cells: 5
+  Cell IDs: [677, 713, 655, 721, 663]
+
+Rosette 76:
+  Center: (122, 602)
+  Number of cells: 5
+  Cell IDs: [739, 688, 660, 729, 732]
+
+Rosette 77:
+  Center: (1639, 604)
+  Number of cells: 5
+  Cell IDs: [717, 749, 664, 764, 703]
+
+Rosette 78:
+  Center: (836, 614)
+  Number of cells: 5
+  Cell IDs: [741, 777, 746, 699, 669]
+
+Rosette 79:
+  Center: (1139, 621)
+  Number of cells: 6
+  Cell IDs: [738, 714, 750, 789, 758, 759]
+
+Rosette 80:
+  Center: (1833, 619)
+  Number of cells: 5
+  Cell IDs: [776, 784, 691, 757, 697]
+
+Rosette 81:
+  Center: (1162, 631)
+  Number of cells: 8
+  Cell IDs: [771, 678, 714, 750, 789, 758, 759, 790]
+
+Rosette 82:
+  Center: (1299, 639)
+  Number of cells: 5
+  Cell IDs: [803, 716, 785, 754, 733]
+
+Rosette 83:
+  Center: (1083, 645)
+  Number of cells: 6
+  Cell IDs: [738, 807, 743, 747, 796, 797]
+
+Rosette 84:
+  Center: (1778, 643)
+  Number of cells: 5
+  Cell IDs: [705, 809, 751, 757, 795]
+
+Rosette 85:
+  Center: (743, 649)
+  Number of cells: 5
+  Cell IDs: [805, 745, 819, 762, 763]
+
+Rosette 86:
+  Center: (325, 677)
+  Number of cells: 5
+  Cell IDs: [781, 767, 827, 798, 831]
+
+Rosette 87:
+  Center: (161, 682)
+  Number of cells: 5
+  Cell IDs: [779, 787, 853, 822, 855]
+
+Rosette 88:
+  Center: (63, 690)
+  Number of cells: 5
+  Cell IDs: [812, 786, 856, 793, 860]
+
+Rosette 89:
+  Center: (762, 690)
+  Number of cells: 5
+  Cell IDs: [869, 777, 849, 851, 819]
+
+Rosette 90:
+  Center: (919, 708)
+  Number of cells: 5
+  Cell IDs: [802, 871, 872, 844, 858]
+
+Rosette 91:
+  Center: (1339, 717)
+  Number of cells: 5
+  Cell IDs: [833, 865, 835, 852, 885]
+
+Rosette 92:
+  Center: (1406, 724)
+  Number of cells: 5
+  Cell IDs: [800, 865, 901, 873, 813]
+
+Rosette 93:
+  Center: (1882, 732)
+  Number of cells: 5
+  Cell IDs: [898, 841, 814, 890, 861]
+
+Rosette 94:
+  Center: (1773, 738)
+  Number of cells: 5
+  Cell IDs: [843, 889, 891, 892, 862]
+
+Rosette 95:
+  Center: (328, 747)
+  Number of cells: 7
+  Cell IDs: [834, 933, 915, 886, 921, 827, 831]
+
+Rosette 96:
+  Center: (279, 768)
+  Number of cells: 8
+  Cell IDs: [868, 932, 972, 945, 850, 915, 956, 831]
+
+Rosette 97:
+  Center: (879, 762)
+  Number of cells: 5
+  Cell IDs: [871, 880, 912, 923, 925]
+
+Rosette 98:
+  Center: (83, 774)
+  Number of cells: 5
+  Cell IDs: [936, 943, 854, 860, 893]
+
+Rosette 99:
+  Center: (1188, 773)
+  Number of cells: 5
+  Cell IDs: [900, 940, 878, 917, 952]
+
+Rosette 100:
+  Center: (1132, 774)
+  Number of cells: 5
+  Cell IDs: [900, 888, 949, 952, 924]
+
+Rosette 101:
+  Center: (1268, 784)
+  Number of cells: 6
+  Cell IDs: [904, 970, 944, 914, 882, 955]
+
+Rosette 102:
+  Center: (941, 794)
+  Number of cells: 6
+  Cell IDs: [963, 872, 969, 912, 954, 959]
+
+Rosette 103:
+  Center: (997, 793)
+  Number of cells: 5
+  Cell IDs: [960, 963, 903, 948, 989]
+
+Rosette 104:
+  Center: (1559, 803)
+  Number of cells: 8
+  Cell IDs: [961, 929, 998, 938, 909, 979, 988, 895]
+
+Rosette 105:
+  Center: (381, 804)
+  Number of cells: 5
+  Cell IDs: [933, 921, 986, 953, 985]
+
+Rosette 106:
+  Center: (1210, 810)
+  Number of cells: 7
+  Cell IDs: [997, 940, 1011, 917, 982, 952, 955]
+
+Rosette 107:
+  Center: (1193, 843)
+  Number of cells: 6
+  Cell IDs: [1026, 1038, 1040, 1011, 982, 952]
+
+Rosette 108:
+  Center: (1597, 840)
+  Number of cells: 5
+  Cell IDs: [961, 938, 1034, 1041, 979]
+
+Rosette 109:
+  Center: (789, 846)
+  Number of cells: 5
+  Cell IDs: [995, 964, 1033, 1042, 1020]
+
+Rosette 110:
+  Center: (915, 854)
+  Number of cells: 6
+  Cell IDs: [1030, 969, 1009, 1052, 1053, 959]
+
+Rosette 111:
+  Center: (1557, 873)
+  Number of cells: 7
+  Cell IDs: [961, 1058, 1059, 998, 1094, 1069, 1041]
+
+Rosette 112:
+  Center: (990, 867)
+  Number of cells: 5
+  Cell IDs: [1016, 1050, 989, 1054, 1055]
+
+Rosette 113:
+  Center: (660, 879)
+  Number of cells: 6
+  Cell IDs: [1032, 1066, 1008, 1075, 1048, 1082]
+
+Rosette 114:
+  Center: (380, 884)
+  Number of cells: 5
+  Cell IDs: [1037, 1045, 1079, 1085, 1023]
+
+Rosette 115:
+  Center: (1783, 886)
+  Number of cells: 7
+  Cell IDs: [1024, 1025, 1056, 1063, 1097, 1098, 1049]
+
+Rosette 116:
+  Center: (1718, 883)
+  Number of cells: 5
+  Cell IDs: [1056, 1096, 1043, 1022, 1086]
+
+Rosette 117:
+  Center: (105, 891)
+  Number of cells: 5
+  Cell IDs: [1035, 1039, 1013, 1080, 1087]
+
+Rosette 118:
+  Center: (1037, 891)
+  Number of cells: 5
+  Cell IDs: [1090, 1027, 1077, 1021, 1055]
+
+Rosette 119:
+  Center: (870, 900)
+  Number of cells: 5
+  Cell IDs: [1062, 1099, 1112, 1052, 1053]
+
+Rosette 120:
+  Center: (765, 910)
+  Number of cells: 5
+  Cell IDs: [1122, 1065, 1042, 1108, 1111]
+
+Rosette 121:
+  Center: (1643, 913)
+  Number of cells: 5
+  Cell IDs: [1121, 1095, 1074, 1107, 990]
+
+Rosette 122:
+  Center: (279, 931)
+  Number of cells: 6
+  Cell IDs: [1152, 1091, 1123, 1104, 1139, 1083]
+
+Rosette 123:
+  Center: (1404, 936)
+  Number of cells: 7
+  Cell IDs: [1153, 1060, 1160, 1067, 1073, 1148, 1118]
+
+Rosette 124:
+  Center: (664, 941)
+  Number of cells: 6
+  Cell IDs: [1155, 1126, 1140, 1110, 1143, 1082]
+
+Rosette 125:
+  Center: (1549, 946)
+  Number of cells: 5
+  Cell IDs: [1094, 1163, 1135, 1170, 1145]
+
+Rosette 126:
+  Center: (1489, 945)
+  Number of cells: 5
+  Cell IDs: [1164, 1134, 1135, 1173, 1118]
+
+Rosette 127:
+  Center: (1899, 946)
+  Number of cells: 5
+  Cell IDs: [1088, 1156, 1171, 1147, 1117]
+
+Rosette 128:
+  Center: (397, 954)
+  Number of cells: 6
+  Cell IDs: [1125, 1105, 1169, 1079, 1176, 1114]
+
+Rosette 129:
+  Center: (100, 949)
+  Number of cells: 5
+  Cell IDs: [1127, 1131, 1080, 1150, 1087]
+
+Rosette 130:
+  Center: (333, 949)
+  Number of cells: 5
+  Cell IDs: [1154, 1125, 1169, 1083, 1084]
+
+Rosette 131:
+  Center: (1037, 953)
+  Number of cells: 5
+  Cell IDs: [1184, 1090, 1157, 1077, 1115]
+
+Rosette 132:
+  Center: (752, 958)
+  Number of cells: 5
+  Cell IDs: [1122, 1189, 1162, 1195, 1111]
+
+Rosette 133:
+  Center: (462, 959)
+  Number of cells: 5
+  Cell IDs: [1120, 1101, 1167, 1175, 1114]
+
+Rosette 134:
+  Center: (1766, 978)
+  Number of cells: 7
+  Cell IDs: [1146, 1097, 1098, 1132, 1204, 1210, 1179]
+
+Rosette 135:
+  Center: (690, 984)
+  Number of cells: 5
+  Cell IDs: [1216, 1155, 1225, 1196, 1143]
+
+Rosette 136:
+  Center: (1337, 987)
+  Number of cells: 5
+  Cell IDs: [1191, 1160, 1142, 1207, 1148]
+
+Rosette 137:
+  Center: (811, 986)
+  Number of cells: 5
+  Cell IDs: [1186, 1221, 1200, 1112, 1144]
+
+Rosette 138:
+  Center: (1873, 992)
+  Number of cells: 5
+  Cell IDs: [1218, 1165, 1199, 1171, 1214]
+
+Rosette 139:
+  Center: (1537, 998)
+  Number of cells: 5
+  Cell IDs: [1163, 1170, 1235, 1173, 1212]
+
+Rosette 140:
+  Center: (1014, 1011)
+  Number of cells: 6
+  Cell IDs: [1157, 1222, 1256, 1174, 1238, 1211]
+
+Rosette 141:
+  Center: (937, 1017)
+  Number of cells: 5
+  Cell IDs: [1250, 1190, 1233, 1202, 1211]
+
+Rosette 142:
+  Center: (1765, 1027)
+  Number of cells: 9
+  Cell IDs: [1286, 1210, 1132, 1179, 1204, 1239, 1241, 1146, 1275]
+
+Rosette 143:
+  Center: (1491, 1028)
+  Number of cells: 5
+  Cell IDs: [1219, 1197, 1266, 1235, 1212]
+
+Rosette 144:
+  Center: (38, 1029)
+  Number of cells: 5
+  Cell IDs: [1255, 1193, 1226, 1267, 1178]
+
+Rosette 145:
+  Center: (774, 1046)
+  Number of cells: 8
+  Cell IDs: [1248, 1312, 1186, 1221, 1189, 1262, 1274, 1278]
+
+Rosette 146:
+  Center: (878, 1055)
+  Number of cells: 8
+  Cell IDs: [1283, 1289, 1230, 1232, 1233, 1202, 1298, 1268]
+
+Rosette 147:
+  Center: (1021, 1048)
+  Number of cells: 8
+  Cell IDs: [1284, 1157, 1222, 1256, 1290, 1292, 1238, 1211]
+
+Rosette 148:
+  Center: (1594, 1086)
+  Number of cells: 6
+  Cell IDs: [1285, 1320, 1261, 1326, 1263, 1236]
+
+Rosette 149:
+  Center: (1723, 1092)
+  Number of cells: 5
+  Cell IDs: [1322, 1330, 1333, 1241, 1275]
+
+Rosette 150:
+  Center: (1171, 1106)
+  Number of cells: 6
+  Cell IDs: [1344, 1287, 1354, 1293, 1331, 1269]
+
+Rosette 151:
+  Center: (886, 1119)
+  Number of cells: 7
+  Cell IDs: [1250, 1283, 1351, 1360, 1361, 1298, 1268]
+
+Rosette 152:
+  Center: (202, 1115)
+  Number of cells: 5
+  Cell IDs: [1348, 1306, 1338, 1307, 1276]
+
+Rosette 153:
+  Center: (702, 1127)
+  Number of cells: 6
+  Cell IDs: [1345, 1381, 1323, 1296, 1362, 1339]
+
+Rosette 154:
+  Center: (1285, 1127)
+  Number of cells: 5
+  Cell IDs: [1313, 1337, 1297, 1365, 1369]
+
+Rosette 155:
+  Center: (769, 1130)
+  Number of cells: 5
+  Cell IDs: [1312, 1315, 1371, 1339, 1340]
+
+Rosette 156:
+  Center: (1589, 1132)
+  Number of cells: 6
+  Cell IDs: [1377, 1320, 1353, 1384, 1326, 1343]
+
+Rosette 157:
+  Center: (97, 1140)
+  Number of cells: 5
+  Cell IDs: [1383, 1387, 1356, 1328, 1334]
+
+Rosette 158:
+  Center: (1488, 1165)
+  Number of cells: 5
+  Cell IDs: [1379, 1380, 1327, 1424, 1394]
+
+Rosette 159:
+  Center: (675, 1167)
+  Number of cells: 5
+  Cell IDs: [1381, 1413, 1362, 1372, 1406]
+
+Rosette 160:
+  Center: (972, 1172)
+  Number of cells: 5
+  Cell IDs: [1355, 1420, 1292, 1399, 1403]
+
+Rosette 161:
+  Center: (1203, 1170)
+  Number of cells: 5
+  Cell IDs: [1344, 1411, 1414, 1391, 1393]
+
+Rosette 162:
+  Center: (1731, 1173)
+  Number of cells: 5
+  Cell IDs: [1347, 1382, 1330, 1430, 1404]
+
+Rosette 163:
+  Center: (1814, 1200)
+  Number of cells: 6
+  Cell IDs: [1447, 1451, 1389, 1456, 1400, 1405]
+
