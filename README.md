@@ -87,7 +87,7 @@ cd rosette-identification
 A virtual environment is like a separate workspace for this project.
 
 ```bash
-python -m venv rosette
+python3 -m venv rosette
 ```
 
 This creates a virtual environment called `rosette` that contains all the software this project needs.
@@ -194,7 +194,7 @@ pip install numpy==1.24.3 scipy==1.11.4 matplotlib==3.8.2 Pillow==10.1.0
 export PYTORCH_ENABLE_MPS_FALLBACK=1
 ```
 
-This may take 5-10 minutes to download and install everything.
+This may take a few minutes to download and install everything.
 
 #### Step 7: Verify Installation
 ```cmd
