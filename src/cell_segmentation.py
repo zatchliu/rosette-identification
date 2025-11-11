@@ -4,9 +4,6 @@ Cell Segmentation Module
 This module handles loading images and detecting individual cells using CellPose.
 It filters cells by size and extracts their properties including centroids, areas,
 and binary masks.
-
-Author: Rosette Identification Team
-Date: November 2025
 """
 
 import numpy as np

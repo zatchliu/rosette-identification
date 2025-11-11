@@ -4,9 +4,6 @@ Test Cell Segmentation Module
 This test file visualizes the cell segmentation results using matplotlib.
 It shows the original image with cell outlines and the segmented cells with
 individual labels/colors.
-
-Author: Rosette Identification Team
-Date: November 2025
 """
 
 import os
