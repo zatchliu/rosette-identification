@@ -4,7 +4,7 @@
 ## Comment style
 ### Function comments
 - All functions will have a block comment inside the header of the function that specifies what the function does
-    - Exmaple:
+    - Example:
     ```
     def foo(bar):
         """
@@ -16,6 +16,8 @@
         """
         return None
     ```
+
+    **Note:** For this project we don't need to stricly follow this format for the function comments (including Args, Returns, etc), as long there is a sufficient decription of the function
 
 ### Inline comments
 - Use inline comments to explain non-obvious logic in the code
