@@ -41,8 +41,10 @@ def main():
     6. Create interactive HTML visualization
     """
     # File paths to process
-    files = ['/Users/braedenfalzarano/Documents/class/COMP333/project/Rosette_data_folder/Images from JM/ZO1/C_3_84_t0c2x0-1926y0-1222.png']
-    
+    import os
+    image_path = os.path.join(config.DATA_DIR, config.IMAGE_FILE)
+    files = [image_path]   
+     
     # Load images
     imgs = load_and_validate_images(files)
     
