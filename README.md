@@ -32,9 +32,9 @@ This toolkit automatically detects and identifies **rosettes** in microscopy ima
 ## System Requirements
 
 ### All Users Need:
-- **Python 3.8 or newer** installed on your computer
+- **Python 3.10 or 3.11** installed on your computer
   - To check if you have Python: Open Terminal (Mac) or Command Prompt (Windows) and type `python --version`
-  - If you don't have Python, download it from [python.org](https://www.python.org/downloads/)
+  - If you don't have Python, download it from [python.org]([https://www.python.org/downloads/](https://www.python.org/downloads/release/python-3110/))
 
 ### GPU Support (for faster processing):
 - **macOS with M1/M2/M3 chip**: GPU support is available automatically
@@ -67,10 +67,15 @@ Instead of typing folder paths, let's copy the path from Finder:
 7. Press `Command + V` to paste the path
 8. Press Enter
 
-**Example:** If you copied your Documents folder, you'll see something like:
+**Example:** If you copied your Documents folder, you'll see something like this before you press enter:
 ```bash
 cd /Users/yourname/Documents
 ```
+and something like this after you hit enter: 
+```bash
+braedenfalzarano@Braedens-MacBook-Pro-7 Documents % 
+```
+**Note:** It won't say exactly "braedenfalzarano@Braedens-MacBook-Pro-7", but it should say something identifying your machine. This is not important or relevant to the previous commands that you ran and should stay the same throughout your use of the terminal.
 
 #### Step 3: Clone (Download) This Project
 
@@ -83,11 +88,15 @@ cd rosette-identification
 
 **Note:** YOUR-USERNAME is your GitHub username
 
+**Additional Resources:**
+- [Installing and setting up GitHub](https://docs.github.com/en/get-started/git-basics/set-up-git)
+- [Cloning a Repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+
 #### Step 4: Create a Virtual Environment
 A virtual environment is like a separate workspace for this project.
 
 ```bash
-python3 -m venv rosette
+python3.11 -m venv rosette
 ```
 
 This creates a virtual environment called `rosette` that contains all the software this project needs.
@@ -102,12 +111,17 @@ You'll see `(rosette)` appear at the start of your command line. This means you'
 #### Step 6: Install Required Software
 
 ```bash
-# Install opencv first
-python -m pip install -U pip wheel setuptools
-python -m pip install --only-binary=:all: "opencv-python-headless==4.10.0.84"
+# Check your Python version
+python --version
+# If it prints "Python 3.11.SOME_NUMBER," you are all set and ready to proceed
+# If not, you may need to check your Python install
 
 # Upgrade pip
 pip install --upgrade pip
+
+# Install opencv first
+python -m pip install -U pip wheel setuptools
+python -m pip install --only-binary=:all: "opencv-python-headless==4.10.0.84"
 
 # Install PyTorch
 pip install torch torchvision
@@ -117,19 +131,17 @@ pip install 'cellpose[gui]'
 
 # Install other required packages
 pip install numpy==1.24.3 scipy==1.11.4 matplotlib==3.8.2 Pillow==10.1.0
-
-# To avoid MPS Fallback error (this is necessary)
-export PYTORCH_ENABLE_MPS_FALLBACK=1
 ```
 
-This may take a few minutes to download and install everything.
+This may take a few minutes to download and install everything. If it proceeds without any red error messages, you should be all set to go.
 
-#### Step 7: Verify Installation
+#### Step 7: Check for GPU Compatibility
 ```bash
 python -c "from cellpose import core; print(f'GPU available: {core.use_gpu()}')"
 ```
 
-You should see: `GPU available: True`
+If you see: `GPU available: True`, your system can use GPUs to increase processing speed.
+If not, the code will still run, but may take longer due to using CPUs rather than GPUs.
 
 **Installation complete!** You can now skip to **Running the Rosette Detection**.
 
@@ -160,7 +172,7 @@ cd rosette-identification
 
 
 #### Step 4: Create a Virtual Environment using miniconda
-Link to miniconda installation instrutions [here](https://www.anaconda.com/docs/getting-started/miniconda/install)
+Link to miniconda installation instructions [here](https://www.anaconda.com/docs/getting-started/miniconda/install)
 
 ```cmd
 conda create -n rosette python=3.10 -y
@@ -189,9 +201,6 @@ pip install "cellpose[gui]"
 
 # Install other packages
 pip install numpy==1.24.3 scipy==1.11.4 matplotlib==3.8.2 Pillow==10.1.0
-
-# To avoid MPS Fallback error (this is necessary)
-export PYTORCH_ENABLE_MPS_FALLBACK=1
 ```
 
 This may take a few minutes to download and install everything.
@@ -201,9 +210,9 @@ This may take a few minutes to download and install everything.
 python -c "from cellpose import core; print(f'GPU available: {core.use_gpu()}')"
 ```
 
-You should see: `GPU available: False`
+You will likely see: `GPU available: False`
 
-This is normal for Windows - it will use CPU mode.
+This is normal for Windows - it will use CPU mode as stated earlier.
 
 **Installation complete!** Continue to the next section.
 
@@ -229,11 +238,17 @@ rosette\Scripts\activate
 
 **Mac:**
 ```bash
+# To avoid MPS Fallback error (this is necessary on macOS)
+export PYTORCH_ENABLE_MPS_FALLBACK=1
+
 python app.py
 ```
 
 **Windows:**
 ```cmd
+# To avoid MPS Fallback error (just to be safe on Windows)
+export PYTORCH_ENABLE_MPS_FALLBACK=1
+
 python app.py
 ```
 
@@ -254,7 +269,7 @@ STEP 2: FINDING CELL BOUNDARIES AND CONTACT POINTS
 ```
 
 **Processing time:**
-- Small images (< 1000 cells): 1-3 minutes
+- Small images (< 1000 cells): ~4 minutes
 - Large images (> 1000 cells): 5-10 minutes
 - Mac with GPU: Faster
 - Windows with CPU: Slower (but it works!)
