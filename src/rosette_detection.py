@@ -437,10 +437,14 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
             
             const key = `${{x}},${{y}}`;
             const cellId = pixelToCellMap.get(key);
-            
+            if (cellId) {{
+                document.getElementById('hover-info').innerHTML =
+                    `<strong>Cell ID:</strong> ${{cellID}}`;
+            }}
             if (cellId && cellToRosettes[cellId]) {{
                 const rosetteIndices = cellToRosettes[cellId];
                 const newSet = new Set(rosetteIndices);
+                
                 
                 // Only redraw if changed
                 if (![...newSet].every(r => currentHighlightedRosettes.has(r)) ||
@@ -455,7 +459,6 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
                     }}).join(', ');
                     
                     document.getElementById('hover-info').innerHTML = 
-                        `<strong>Cell ID:</strong> ${{cellId}}<br>` +
                         `<strong>Part of:</strong> ${{rosetteInfo}}`;
                 }}
             }} else {{
