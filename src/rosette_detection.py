@@ -96,9 +96,86 @@ def cluster_vertices(vertices, vertex_radius, min_cells_for_rosette=5):
     return merged_vertices
 
 
+def calculate_perimeter(cell_mask):
+    """
+    Calculate the perimeter of a cell by counting boundary pixels.
+    
+    Args:
+        cell_mask: Binary mask of the cell
+        
+    Returns:
+        Perimeter in pixels
+    """
+    from scipy.ndimage import binary_erosion
+    eroded = binary_erosion(cell_mask)
+    boundary = cell_mask & ~eroded
+    perimeter = np.sum(boundary)
+    return perimeter
+
+
+def calculate_cell_neighbors(valid_cells, cell_boundaries):
+    """
+    Calculate the number of neighboring cells for each cell.
+    Two cells are neighbors if their boundaries are within 2 pixels of each other.
+    
+    Args:
+        valid_cells: List of valid cell IDs
+        cell_boundaries: Dictionary mapping cell_id to boundary coordinates
+        
+    Returns:
+        Dictionary mapping cell_id to number of neighbors
+    """
+    print("Calculating cell neighbors...")
+    cell_neighbors = {}
+    
+    for cell_id in valid_cells:
+        neighbors = set()
+        boundary = cell_boundaries[cell_id]
+        
+        for other_id in valid_cells:
+            if other_id == cell_id:
+                continue
+            
+            other_boundary = cell_boundaries[other_id]
+            
+            # Calculate minimum distance between boundaries
+            for point in boundary:
+                distances = np.sqrt(np.sum((other_boundary - point)**2, axis=1))
+                if np.min(distances) <= 2:  # Adjacent if within 2 pixels
+                    neighbors.add(other_id)
+                    break
+        
+        cell_neighbors[cell_id] = len(neighbors)
+    
+    return cell_neighbors
+
+
+def calculate_cell_vertices(valid_cells, vertices):
+    """
+    Calculate the number of vertices each cell participates in.
+    
+    Args:
+        valid_cells: List of valid cell IDs
+        vertices: List of all vertex dictionaries
+        
+    Returns:
+        Dictionary mapping cell_id to number of vertices
+    """
+    print("Calculating cell vertices...")
+    cell_vertex_count = defaultdict(int)
+    
+    for vertex in vertices:
+        for cell_id in vertex['cells']:
+            cell_vertex_count[cell_id] += 1
+    
+    
+    return dict(cell_vertex_count)
+
+
 def create_base_visualization(img, valid_cells, cell_properties, rosettes):
     """
     Create base image with cell outlines and rosettes highlighted in green.
+    Red dots are NOT drawn here - they will be drawn dynamically in JavaScript.
     
     Uses PIL to ensure exact pixel-coordinate correspondence between the base
     image and the JavaScript canvas overlay.
@@ -161,13 +238,7 @@ def create_base_visualization(img, valid_cells, cell_properties, rosettes):
     base_pil = base_pil.convert('RGBA')
     final_img = Image.alpha_composite(base_pil, overlay)
     
-    # Draw rosette centers
-    draw_final = ImageDraw.Draw(final_img)
-    for idx, rosette in enumerate(rosettes):
-        x, y = rosette['location']
-        radius = 6
-        draw_final.ellipse([x-radius, y-radius, x+radius, y+radius], 
-                          fill=(255, 0, 0, 255), outline=(255, 255, 255, 255))
+    # RED DOTS ARE NOW DRAWN IN JAVASCRIPT, NOT HERE
     
     # Convert to base64 for HTML embedding
     buf = BytesIO()
@@ -178,34 +249,52 @@ def create_base_visualization(img, valid_cells, cell_properties, rosettes):
     return base_img_base64
 
 
-def prepare_interactive_data(valid_cells, cell_properties, rosettes):
+def prepare_interactive_data(valid_cells, cell_properties, cell_boundaries, vertices, rosettes):
     """
     Prepare data structures for JavaScript interactive visualization.
     
     Args:
         valid_cells: List of valid cell IDs
         cell_properties: Dictionary with cell properties
+        cell_boundaries: Dictionary mapping cell_id to boundary coordinates
+        vertices: List of all vertex dictionaries
         rosettes: List of rosette dictionaries
         
     Returns:
-        Tuple of (cell_pixels, rosette_data, cell_to_rosettes) where:
-        - cell_pixels: Dict mapping cell_id to list of [y, x] coordinates
-        - rosette_data: List of rosette info dictionaries
-        - cell_to_rosettes: Dict mapping cell_id to list of rosette indices
+        Tuple of (cell_pixels, cell_data, rosette_data, cell_to_rosettes)
     """
+    # Calculate additional cell properties
+    cell_neighbors = calculate_cell_neighbors(valid_cells, cell_boundaries)
+    cell_vertex_count = calculate_cell_vertices(valid_cells, vertices)
+    
     # Build cell-to-rosettes mapping
     cell_to_rosettes = defaultdict(list)
     for rosette_idx, rosette in enumerate(rosettes):
         for cell_id in rosette['cells']:
             cell_to_rosettes[cell_id].append(rosette_idx)
     
-    # Prepare pixel data for each cell
+    # Prepare pixel data for ALL cells
     cell_pixels = {}
     for cell_id in valid_cells:
-        if cell_id in cell_to_rosettes:  # Only include cells in rosettes
-            ys, xs = np.where(cell_properties[cell_id]['mask'])
-            # Keep ALL pixels for accurate rendering
-            cell_pixels[int(cell_id)] = [[int(y), int(x)] for y, x in zip(ys, xs)]
+        ys, xs = np.where(cell_properties[cell_id]['mask'])
+        cell_pixels[int(cell_id)] = [[int(y), int(x)] for y, x in zip(ys, xs)]
+    
+    # Prepare comprehensive cell data
+    cell_data = {}
+    for cell_id in valid_cells:
+        cell_mask = cell_properties[cell_id]['mask']
+        area = cell_properties[cell_id]['area']
+        perimeter = calculate_perimeter(cell_mask)
+        num_neighbors = cell_neighbors.get(cell_id, 0)
+        num_vertices = cell_vertex_count.get(cell_id, 0)
+        
+        cell_data[int(cell_id)] = {
+            'area': int(area),
+            'perimeter': int(perimeter),
+            'num_neighbors': int(num_neighbors),
+            'num_vertices': int(num_vertices),
+            'in_rosette': cell_id in cell_to_rosettes
+        }
     
     # Prepare rosette data
     rosette_data = []
@@ -217,20 +306,22 @@ def prepare_interactive_data(valid_cells, cell_properties, rosettes):
             'num_cells': rosette['num_cells']
         })
     
-    return cell_pixels, rosette_data, cell_to_rosettes
+    return cell_pixels, cell_data, rosette_data, cell_to_rosettes
 
 
-def generate_html_visualization(base_img_base64, cell_pixels, rosette_data, 
+def generate_html_visualization(base_img_base64, cell_pixels, cell_data, rosette_data, 
                                 cell_to_rosettes, num_cells, num_rosettes):
     """
     Generate interactive HTML visualization file.
     
     Creates an HTML file with embedded JavaScript that allows users to hover
-    over cells and see their associated rosettes highlighted in orange.
+    over cells and see their properties and associated rosettes. Red dots are
+    drawn dynamically and can be removed by clicking.
     
     Args:
         base_img_base64: Base64-encoded PNG string of base visualization
         cell_pixels: Dictionary mapping cell_id to pixel coordinates
+        cell_data: Dictionary mapping cell_id to cell properties
         rosette_data: List of rosette information dictionaries
         cell_to_rosettes: Dictionary mapping cell_id to rosette indices
         num_cells: Total number of valid cells detected
@@ -303,7 +394,20 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
             padding: 10px;
             border-radius: 5px;
             margin-top: 10px;
-            min-height: 60px;
+            min-height: 80px;
+        }}
+        .cell-property {{
+            display: inline-block;
+            margin-right: 15px;
+            margin-top: 5px;
+        }}
+        .property-label {{
+            color: #aaa;
+            font-size: 12px;
+        }}
+        .property-value {{
+            color: #4CAF50;
+            font-weight: bold;
         }}
     </style>
 </head>
@@ -317,17 +421,17 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
                     <div class="stat-label">Total Cells</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value">{num_rosettes}</div>
+                    <div class="stat-value" id="rosette-count">{num_rosettes}</div>
                     <div class="stat-label">Total Rosettes</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value">{len(cell_pixels)}</div>
+                    <div class="stat-value">{len([c for c in cell_data.values() if c['in_rosette']])}</div>
                     <div class="stat-label">Cells in Rosettes</div>
                 </div>
             </div>
             <div id="hover-info">
-                <strong>Instructions:</strong> All rosette cells are shown in green. 
-                Hover over any cell to highlight its rosette(s) in orange.
+                <strong>Instructions:</strong> Hover over any cell to see its properties. 
+                Rosette cells are shown in green. Click on a red dot to remove that rosette.
             </div>
         </div>
         
@@ -342,6 +446,7 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
         
         // Data from Python
         const cellPixels = {json.dumps(cell_pixels)};
+        const cellData = {json.dumps(cell_data)};
         const rosettes = {json.dumps(rosette_data)};
         const cellToRosettes = {json.dumps({int(k): v for k, v in cell_to_rosettes.items()})};
         
@@ -351,6 +456,7 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
         
         let currentHighlightedRosettes = new Set();
         let pixelToCellMap = new Map();
+        let removedRosettes = new Set(); // Track removed rosettes
         
         baseImg.onload = function() {{
             // Set canvas internal dimensions to match image exactly
@@ -375,27 +481,57 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
             drawImage();
         }};
         
-        /**
-         * Draw the base image and any highlighted rosettes.
-         * 
-         * Draws the base visualization (cell outlines and green rosettes) and overlays
-         * orange highlighting for any rosettes in currentHighlightedRosettes.
-         */
         function drawImage() {{
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(baseImg, 0, 0);
             
-            // Draw highlighted rosettes in ORANGE (on hover)
-            if (currentHighlightedRosettes.size > 0) {{
-                ctx.fillStyle = 'rgba(255, 140, 0, 0.5)';  // Orange with 50% opacity
+            // Draw gray mask over removed rosettes to hide the green
+            if (removedRosettes.size > 0) {{
+                ctx.fillStyle = 'rgba(26, 26, 26, 0.85)';  // Dark gray mask matching background
                 
-                currentHighlightedRosettes.forEach(rosetteIdx => {{
+                removedRosettes.forEach(rosetteIdx => {{
                     const rosette = rosettes[rosetteIdx];
                     rosette.cells.forEach(cellId => {{
                         const pixels = cellPixels[cellId];
                         if (pixels) {{
                             pixels.forEach(([y, x]) => {{
-                                ctx.fillRect(x, y, 1, 1);  // Draw exact pixels
+                                ctx.fillRect(x, y, 1, 1);
+                            }});
+                        }}
+                    }});
+                }});
+            }}
+            
+            // Draw red dots for active rosettes (not removed)
+            rosettes.forEach((rosette, rosetteIdx) => {{
+                if (removedRosettes.has(rosetteIdx)) return;
+                
+                const [cx, cy] = rosette.center;
+                const radius = 6;
+                
+                ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }});
+            
+            // Draw highlighted rosettes in ORANGE (on hover)
+            if (currentHighlightedRosettes.size > 0) {{
+                ctx.fillStyle = 'rgba(255, 140, 0, 0.5)';
+                
+                currentHighlightedRosettes.forEach(rosetteIdx => {{
+                    if (removedRosettes.has(rosetteIdx)) return;
+                    
+                    const rosette = rosettes[rosetteIdx];
+                    rosette.cells.forEach(cellId => {{
+                        const pixels = cellPixels[cellId];
+                        if (pixels) {{
+                            pixels.forEach(([y, x]) => {{
+                                ctx.fillRect(x, y, 1, 1);
                             }});
                         }}
                     }});
@@ -403,18 +539,15 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
                     // Draw emphasized center marker for hovered rosette
                     const [cx, cy] = rosette.center;
                     
-                    // Larger red circle for hovered rosette
                     ctx.fillStyle = 'rgba(255, 0, 0, 1)';
                     ctx.beginPath();
                     ctx.arc(cx, cy, 10, 0, 2 * Math.PI);
                     ctx.fill();
                     
-                    // White border
                     ctx.strokeStyle = 'white';
                     ctx.lineWidth = 2;
                     ctx.stroke();
                     
-                    // Label with background
                     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
                     ctx.fillRect(cx + 12, cy - 16, 50, 20);
                     
@@ -430,41 +563,53 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
         // Handle mouse movement for interactive highlighting
         canvas.addEventListener('mousemove', (e) => {{
             const rect = canvas.getBoundingClientRect();
-            
-            // Direct pixel mapping - no scaling needed since canvas CSS size = internal size
             const x = Math.floor(e.clientX - rect.left);
             const y = Math.floor(e.clientY - rect.top);
             
             const key = `${{x}},${{y}}`;
             const cellId = pixelToCellMap.get(key);
             
-            if (cellId && cellToRosettes[cellId]) {{
-                const rosetteIndices = cellToRosettes[cellId];
-                const newSet = new Set(rosetteIndices);
+            if (cellId && cellData[cellId]) {{
+                const data = cellData[cellId];
+                const rosetteIndices = cellToRosettes[cellId] || [];
                 
-                // Only redraw if changed
+                // Filter out removed rosettes
+                const activeRosetteIndices = rosetteIndices.filter(idx => !removedRosettes.has(idx));
+                const newSet = new Set(activeRosetteIndices);
+                
+                // Update highlighting if changed
                 if (![...newSet].every(r => currentHighlightedRosettes.has(r)) ||
                     ![...currentHighlightedRosettes].every(r => newSet.has(r))) {{
                     currentHighlightedRosettes = newSet;
                     drawImage();
-                    
-                    // Update info
-                    const rosetteInfo = rosetteIndices.map(idx => {{
+                }}
+                
+                // Build info display
+                let infoHTML = `<strong>Cell ID:</strong> ${{cellId}}<br>`;
+                infoHTML += `<div style="margin-top: 8px;">`;
+                infoHTML += `<div class="cell-property"><span class="property-label">Area:</span> <span class="property-value">${{data.area}} px²</span></div>`;
+                infoHTML += `<div class="cell-property"><span class="property-label">Perimeter:</span> <span class="property-value">${{data.perimeter}} px</span></div>`;
+                infoHTML += `<div class="cell-property"><span class="property-label">Neighbors:</span> <span class="property-value">${{data.num_neighbors}}</span></div>`;
+                infoHTML += `<div class="cell-property"><span class="property-label">Vertices:</span> <span class="property-value">${{data.num_vertices}}</span></div>`;
+                infoHTML += `</div>`;
+                
+                if (activeRosetteIndices.length > 0) {{
+                    const rosetteInfo = activeRosetteIndices.map(idx => {{
                         const r = rosettes[idx];
                         return `Rosette #${{idx + 1}} (${{r.num_cells}} cells)`;
                     }}).join(', ');
-                    
-                    document.getElementById('hover-info').innerHTML = 
-                        `<strong>Cell ID:</strong> ${{cellId}}<br>` +
-                        `<strong>Part of:</strong> ${{rosetteInfo}}`;
+                    infoHTML += `<div style="margin-top: 8px;"><strong>Part of:</strong> ${{rosetteInfo}}</div>`;
+                    infoHTML += `<div style="margin-top: 5px; color: #aaa; font-size: 12px;">(Click on red dot to remove rosette)</div>`;
                 }}
+                
+                document.getElementById('hover-info').innerHTML = infoHTML;
             }} else {{
                 if (currentHighlightedRosettes.size > 0) {{
                     currentHighlightedRosettes = new Set();
                     drawImage();
-                    document.getElementById('hover-info').innerHTML = 
-                        '<strong>Instructions:</strong> All rosette cells are shown in green. Hover over any cell to highlight its rosette(s) in orange.';
                 }}
+                document.getElementById('hover-info').innerHTML = 
+                    '<strong>Instructions:</strong> Hover over any cell to see its properties. Rosette cells are shown in green. Click on a red dot to remove that rosette.';
             }}
         }});
         
@@ -473,7 +618,37 @@ def generate_html_visualization(base_img_base64, cell_pixels, rosette_data,
             currentHighlightedRosettes = new Set();
             drawImage();
             document.getElementById('hover-info').innerHTML = 
-                '<strong>Instructions:</strong> All rosette cells are shown in green. Hover over any cell to highlight its rosette(s) in orange.';
+                '<strong>Instructions:</strong> Hover over any cell to see its properties. Rosette cells are shown in green. Click on a red dot to remove that rosette.';
+        }});
+        
+        // Handle click to remove rosettes (click on red dot)
+        canvas.addEventListener('click', (e) => {{
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor(e.clientX - rect.left);
+            const y = Math.floor(e.clientY - rect.top);
+            
+            // Check if click is on any rosette center (red dot)
+            for (let i = 0; i < rosettes.length; i++) {{
+                if (removedRosettes.has(i)) continue;
+                
+                const [cx, cy] = rosettes[i].center;
+                const distance = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
+                
+                // If clicked within the red dot (radius 6, but give some leeway)
+                if (distance <= 10) {{
+                    removedRosettes.add(i);
+                    currentHighlightedRosettes.delete(i);
+                    drawImage();
+                    
+                    // Update rosette count
+                    const numRemaining = rosettes.length - removedRosettes.size;
+                    document.getElementById('rosette-count').textContent = numRemaining;
+                    
+                    document.getElementById('hover-info').innerHTML = 
+                        `<strong>Rosette #${{i + 1}} removed!</strong> ${{numRemaining}} rosette(s) remaining.`;
+                    return;
+                }}
+            }}
         }});
     </script>
 </body>
