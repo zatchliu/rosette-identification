@@ -150,7 +150,7 @@ def calculate_cell_neighbors(valid_cells, cell_boundaries):
     return cell_neighbors
 
 
-def calculate_cell_vertices(valid_cells, vertices, num_cells):
+def calculate_cell_vertices(valid_cells, vertices):
     """
     Calculate the number of vertices each cell participates in.
     
@@ -166,8 +166,7 @@ def calculate_cell_vertices(valid_cells, vertices, num_cells):
     
     for vertex in vertices:
         for cell_id in vertex['cells']:
-            if vertex['cells'] == num_cells:
-                cell_vertex_count[cell_id] += 1
+            cell_vertex_count[cell_id] += 1
     
     
     return dict(cell_vertex_count)
