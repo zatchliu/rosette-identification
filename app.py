@@ -6,15 +6,16 @@ workflow by importing and coordinating the modular components:
 - cell_segmentation: Loads images and detects individual cells
 - vertex_detection: Finds points where multiple cells meet
 - rosette_detection: Clusters vertices and creates visualizations
+- csv_export: Exports detailed cell properties and junction counts to CSV
 
-Author: Rosette Identification Team
-Date: November 2025
 """
 
 from src.cell_segmentation import load_and_validate_images, detect_cells, extract_cell_boundaries
 from src.vertex_detection import find_vertices
 from src.rosette_detection import cluster_vertices, create_base_visualization, prepare_interactive_data, generate_html_visualization
+from src.csv_export import generate_csv_export
 import config
+import os
 
 # ============================================================================
 # ADJUSTABLE PARAMETERS
@@ -39,9 +40,9 @@ def main():
     4. Find vertices where cells meet
     5. Cluster vertices into rosettes
     6. Create interactive HTML visualization
+    7. Export cell data and junction counts to CSV
     """
     # File paths to process
-    import os
     image_path = os.path.join(config.DATA_DIR, config.IMAGE_FILE)
     files = [image_path]   
      
@@ -60,13 +61,18 @@ def main():
     # Extract cell boundaries
     cell_boundaries = extract_cell_boundaries(valid_cells, cell_properties)
     
-    # Find vertices where cells meet
-    vertices = find_vertices(
+    # Find ALL vertices where cells meet (3+ cells) for comprehensive junction analysis
+    all_vertices = find_vertices(
+        valid_cells, cell_boundaries, mask, VERTEX_RADIUS, min_cells_for_vertex=3
+    )
+    
+    # Find rosette vertices (5+ cells) for visualization
+    rosette_vertices = find_vertices(
         valid_cells, cell_boundaries, mask, VERTEX_RADIUS, MIN_CELLS_FOR_ROSETTE
     )
     
-    # Cluster nearby vertices into rosettes
-    rosettes = cluster_vertices(vertices, VERTEX_RADIUS)
+    # Cluster nearby rosette vertices into rosettes
+    rosettes = cluster_vertices(rosette_vertices, VERTEX_RADIUS)
     
     num_rosettes = len(rosettes)
     
@@ -119,6 +125,25 @@ def main():
     print(f"\n{'='*70}")
     print(f"Interactive visualization created: {output_file}")
     print(f"Open this file in your web browser to interact with the rosettes!")
+    print(f"{'='*70}")
+    
+    # Export data to CSV
+    print("\n" + "="*70)
+    print("STEP 6: EXPORTING DATA TO CSV")
+    print("="*70)
+    
+    # Create output directory if it doesn't exist
+    os.makedirs(config.DATA_OUTPUT_DIR, exist_ok=True)
+    
+    # Generate CSV filename based on image name
+    image_basename = os.path.splitext(config.IMAGE_FILE)[0]
+    csv_output_path = os.path.join(config.DATA_OUTPUT_DIR, f'{image_basename}_cell_data.csv')
+    
+    # Generate CSV export using ALL vertices (3+) for complete junction data
+    generate_csv_export(mask, valid_cells, all_vertices, csv_output_path)
+    
+    print(f"\n{'='*70}")
+    print(f"CSV export created: {csv_output_path}")
     print(f"{'='*70}")
 
 
