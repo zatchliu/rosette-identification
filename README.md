@@ -329,6 +329,31 @@ Rosette Details:
 - **Num Cells**: How many cells in that rosette
 - **Cell IDs**: Which cells belong to that rosette
 
+
+---
+
+## CSV Data Export
+
+### What is Exported?
+
+In addition to the interactive visualization, the program automatically generates a detailed CSV file containing comprehensive data for every detected cell.
+
+**Output Location**: `output/data/{image_name}_cell_data.csv`
+
+**For each cell, the CSV includes:**
+- **Morphological Properties**: Area, perimeter, shape metrics (eccentricity, solidity, etc.)
+- **Location Data**: Centroid coordinates, orientation
+- **Junction Counts**: How many 3-cell, 4-cell, 5-cell, 6-cell, 7-cell, and 8+ cell junctions each cell participates in
+
+### Testing CSV Export
+
+To test the CSV export feature independently:
+```bash
+python tests/test_csv_export.py
+```
+
+This will generate a test CSV and display summary statistics.
+
 ---
 
 ## Adjusting Detection Parameters
