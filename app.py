@@ -175,7 +175,6 @@ def main():
         valid_cells, cell_boundaries, mask, config['vertex_radius'], config['min_rosette_cells']
     )
     
-    
     # Cluster nearby vertices into rosettes
     rosettes = cluster_vertices(vertices, config['vertex_radius'], config['min_rosette_cells'])
     

@@ -9,7 +9,7 @@ These vertices represent the basic junctions between cells.
 import numpy as np
 
 
-def find_vertices(valid_cells, cell_boundaries, mask, vertex_radius, min_cells_for_vertex=3):
+def find_vertices(valid_cells, cell_boundaries, mask, vertex_radius, min_cells_for_vertex=5):
     """
     Identify ALL vertices where multiple cells meet at a common point.
     

@@ -168,13 +168,13 @@ def calculate_cell_vertices(valid_cells, vertices):
         for cell_id in vertex['cells']:
             cell_vertex_count[cell_id] += 1
     
-    
     return dict(cell_vertex_count)
 
 
-def create_base_visualization(img, valid_cells, cell_properties, rosettes):
+def create_base_visualization(img, valid_cells, cell_properties, all_vertices, min_cells_for_rosette=5):
     """
-    Create base image with cell outlines and rosettes highlighted in green.
+    Create base image with cell outlines and rosette cells highlighted in green.
+    Only cells that participate in vertices with min_cells_for_rosette+ cells are highlighted.
     Red dots are NOT drawn here - they will be drawn dynamically in JavaScript.
     
     Uses PIL to ensure exact pixel-coordinate correspondence between the base
@@ -184,7 +184,8 @@ def create_base_visualization(img, valid_cells, cell_properties, rosettes):
         img: Original image array
         valid_cells: List of valid cell IDs
         cell_properties: Dictionary with cell properties
-        rosettes: List of rosette dictionaries
+        all_vertices: List of all vertex dictionaries (for determining which cells to highlight)
+        min_cells_for_rosette: Minimum cells at a vertex to highlight (default: 5)
         
     Returns:
         Base64-encoded PNG string of the visualization
@@ -222,11 +223,17 @@ def create_base_visualization(img, valid_cells, cell_properties, rosettes):
         for y, x in zip(ys, xs):
             overlay.putpixel((x, y), outline_color)
     
-    # Highlight all rosette cells in green
+    # Find cells that participate in 5+ cell vertices (not merged rosettes)
+    rosette_cells = set()
+    for vertex in all_vertices:
+        if len(vertex['cells']) >= min_cells_for_rosette:
+            rosette_cells.update(vertex['cells'])
+    
+    # Highlight rosette cells in green
     green_color = (0, 255, 0, 76)  # Green with 30% opacity
     
-    for rosette in rosettes:
-        for cell_id in rosette['cells']:
+    for cell_id in rosette_cells:
+        if cell_id in cell_properties:
             cell_mask = cell_properties[cell_id]['mask']
             ys, xs = np.where(cell_mask)
             
@@ -431,7 +438,7 @@ def generate_html_visualization(base_img_base64, cell_pixels, cell_data, rosette
             </div>
             <div id="hover-info">
                 <strong>Instructions:</strong> Hover over any cell to see its properties. 
-                Rosette cells are shown in green. Click on a red dot to remove that rosette.
+                Rosette cells are shown in green. Click on a red dot to remove that rosette. Click on a grayed area to restore it.
             </div>
         </div>
         
@@ -609,7 +616,7 @@ def generate_html_visualization(base_img_base64, cell_pixels, cell_data, rosette
                     drawImage();
                 }}
                 document.getElementById('hover-info').innerHTML = 
-                    '<strong>Instructions:</strong> Hover over any cell to see its properties. Rosette cells are shown in green. Click on a red dot to remove that rosette.';
+                    '<strong>Instructions:</strong> Hover over any cell to see its properties. Rosette cells are shown in green. Click on a red dot to remove that rosette. Click on a grayed area to restore it.';
             }}
         }});
         
@@ -618,16 +625,41 @@ def generate_html_visualization(base_img_base64, cell_pixels, cell_data, rosette
             currentHighlightedRosettes = new Set();
             drawImage();
             document.getElementById('hover-info').innerHTML = 
-                '<strong>Instructions:</strong> Hover over any cell to see its properties. Rosette cells are shown in green. Click on a red dot to remove that rosette.';
+                '<strong>Instructions:</strong> Hover over any cell to see its properties. Rosette cells are shown in green. Click on a red dot to remove that rosette. Click on a grayed area to restore it.';
         }});
         
-        // Handle click to remove rosettes (click on red dot)
+        // Handle click to remove/restore rosettes (click on red dot or grayed area)
         canvas.addEventListener('click', (e) => {{
             const rect = canvas.getBoundingClientRect();
             const x = Math.floor(e.clientX - rect.left);
             const y = Math.floor(e.clientY - rect.top);
             
-            // Check if click is on any rosette center (red dot)
+            // First check if clicking on a removed rosette to restore it
+            const key = `${{x}},${{y}}`;
+            const cellId = pixelToCellMap.get(key);
+            
+            if (cellId && cellToRosettes[cellId]) {{
+                const rosetteIndices = cellToRosettes[cellId];
+                
+                // Check if any of this cell's rosettes are removed
+                for (const rosetteIdx of rosetteIndices) {{
+                    if (removedRosettes.has(rosetteIdx)) {{
+                        // Restore this rosette
+                        removedRosettes.delete(rosetteIdx);
+                        drawImage();
+                        
+                        // Update rosette count
+                        const numRemaining = rosettes.length - removedRosettes.size;
+                        document.getElementById('rosette-count').textContent = numRemaining;
+                        
+                        document.getElementById('hover-info').innerHTML = 
+                            `<strong>Rosette #${{rosetteIdx + 1}} restored!</strong> ${{numRemaining}} rosette(s) remaining.`;
+                        return;
+                    }}
+                }}
+            }}
+            
+            // If not clicking on removed rosette, check if clicking on active red dot to remove it
             for (let i = 0; i < rosettes.length; i++) {{
                 if (removedRosettes.has(i)) continue;
                 
@@ -645,7 +677,7 @@ def generate_html_visualization(base_img_base64, cell_pixels, cell_data, rosette
                     document.getElementById('rosette-count').textContent = numRemaining;
                     
                     document.getElementById('hover-info').innerHTML = 
-                        `<strong>Rosette #${{i + 1}} removed!</strong> ${{numRemaining}} rosette(s) remaining.`;
+                        `<strong>Rosette #${{i + 1}} removed!</strong> ${{numRemaining}} rosette(s) remaining. (Click on grayed area to restore)`;
                     return;
                 }}
             }}
