@@ -6,16 +6,18 @@ workflow by importing and coordinating the modular components:
 - cell_segmentation: Loads images and detects individual cells
 - vertex_detection: Finds points where multiple cells meet
 - rosette_detection: Clusters vertices and creates visualizations
+- csv_export: Exports detailed cell properties and junction counts to CSV
 
-Author: Rosette Identification Team
-Date: November 2025
 """
 
 import os
 import sys
 from src.cell_segmentation import load_and_validate_images, detect_cells, extract_cell_boundaries
 from src.vertex_detection import find_vertices
-from src.rosette_detection import cluster_vertices, create_base_visualization, prepare_interactive_data, generate_html_visualization
+from src.rosette_detection import cluster_vertices, create_base_visualization, prepare_interactive_data, generate_html_visualization, calculate_cell_neighbors
+from src.csv_export import generate_csv_export
+import config as cfg
+import os
 
 # ============================================================================
 # DEFAULT PARAMETERS
@@ -122,6 +124,7 @@ def main():
     5. Find vertices where cells meet
     6. Cluster vertices into rosettes
     7. Create interactive HTML visualization
+    7. Export cell data and junction counts to CSV
     """
     # Get user input
     config = get_user_input()
@@ -170,13 +173,18 @@ def main():
     # Extract cell boundaries
     cell_boundaries = extract_cell_boundaries(valid_cells, cell_properties)
     
-    # Find vertices where cells meet (using the min_rosette_cells threshold)
-    vertices = find_vertices(
-        valid_cells, cell_boundaries, mask, config['vertex_radius'], config['min_rosette_cells']
+    # Find ALL vertices where cells meet (3+ cells) for comprehensive junction analysis
+    all_vertices = find_vertices(
+        valid_cells, cell_boundaries, mask, config['vertex_radius'], min_cells_for_vertex=3
     )
     
+    # Find rosette vertices (5+ cells) for visualization
+    rosette_vertices = find_vertices(
+        valid_cells, cell_boundaries, mask, config['vertex_radius'], config['min_rosette_cells']
+    )
+  
     # Cluster nearby vertices into rosettes
-    rosettes = cluster_vertices(vertices, config['vertex_radius'], config['min_rosette_cells'])
+    rosettes = cluster_vertices(rosette_vertices, config['vertex_radius'], config['min_rosette_cells'])
     
     num_rosettes = len(rosettes)
     
@@ -223,10 +231,17 @@ def main():
     base_img_base64 = create_base_visualization(img, valid_cells, cell_properties, rosettes)
     
     # Prepare data for JavaScript (includes all cells and their properties)
+
+    # Calculate cell neighbors once (used for both visualization and CSV export)
+    print("\nCalculating cell neighbors...")
+    cell_neighbors = calculate_cell_neighbors(valid_cells, cell_boundaries)
+    
+    # Prepare data for JavaScript (includes all cells and their properties)
     print("Creating pixel-to-cell mapping and calculating cell properties...")
     cell_pixels, cell_data, rosette_data, cell_to_rosettes = prepare_interactive_data(
-        valid_cells, cell_properties, cell_boundaries, vertices, rosettes
+        valid_cells, cell_properties, cell_boundaries, all_vertices, rosettes, cell_neighbors
     )
+    
     print(f"Prepared data for {len(cell_pixels)} total cells")
     print(f"  - Cells in rosettes: {len([c for c in cell_data.values() if c['in_rosette']])}")
     print(f"  - Cells not in rosettes: {len([c for c in cell_data.values() if not c['in_rosette']])}")
@@ -242,9 +257,28 @@ def main():
         f.write(html_content)
     
     print(f"\n{'='*70}")
-    print(f"✓ SUCCESS! Interactive visualization created: {config['output_file']}")
-    print(f"  Open this file in your web browser to interact with the rosettes!")
-    print(f"{'='*70}\n")
+    print(f"Interactive visualization created: {config['output_file']}")
+    print(f"Open this file in your web browser to interact with the rosettes!")
+    print(f"{'='*70}")
+    
+    # Export data to CSV
+    print("\n" + "="*70)
+    print("STEP 6: EXPORTING DATA TO CSV")
+    print("="*70)
+    
+    # Create output directory if it doesn't exist
+    os.makedirs(cfg.DATA_OUTPUT_DIR, exist_ok=True)
+    
+    # Generate CSV filename based on image name
+    image_basename = os.path.splitext(cfg.IMAGE_FILE)[0]
+    csv_output_path = os.path.join(cfg.DATA_OUTPUT_DIR, f'{image_basename}_cell_data.csv')
+    
+    # Generate CSV export using ALL vertices (3+) for complete junction data
+    generate_csv_export(mask, valid_cells, all_vertices, cell_neighbors, csv_output_path)
+
+    print(f"\n{'='*70}")
+    print(f"CSV export created: {csv_output_path}")
+    print(f"{'='*70}")
 
 
 # Execute main function
