@@ -131,6 +131,9 @@ pip install 'cellpose[gui]'
 
 # Install other required packages
 pip install numpy==1.24.3 scipy==1.11.4 matplotlib==3.8.2 Pillow==10.1.0
+
+pip install skimage
+pip install pandas
 ```
 
 This may take a few minutes to download and install everything. If it proceeds without any red error messages, you should be all set to go.
