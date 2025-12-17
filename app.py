@@ -16,7 +16,7 @@ from src.cell_segmentation import load_and_validate_images, detect_cells, extrac
 from src.vertex_detection import find_vertices
 from src.rosette_detection import cluster_vertices, create_base_visualization, prepare_interactive_data, generate_html_visualization
 from src.csv_export import generate_csv_export
-import config
+import config as cfg
 import os
 
 # ============================================================================
@@ -184,7 +184,7 @@ def main():
     )
   
     # Cluster nearby vertices into rosettes
-    rosettes = cluster_vertices(vertices, config['vertex_radius'], config['min_rosette_cells'])
+    rosettes = cluster_vertices(rosette_vertices, config['vertex_radius'], config['min_rosette_cells'])
     
     num_rosettes = len(rosettes)
     
@@ -233,7 +233,7 @@ def main():
     # Prepare data for JavaScript (includes all cells and their properties)
     print("Creating pixel-to-cell mapping and calculating cell properties...")
     cell_pixels, cell_data, rosette_data, cell_to_rosettes = prepare_interactive_data(
-        valid_cells, cell_properties, cell_boundaries, vertices, rosettes
+        valid_cells, cell_properties, cell_boundaries, all_vertices, rosettes
     )
     print(f"Prepared data for {len(cell_pixels)} total cells")
     print(f"  - Cells in rosettes: {len([c for c in cell_data.values() if c['in_rosette']])}")
@@ -250,7 +250,7 @@ def main():
         f.write(html_content)
     
     print(f"\n{'='*70}")
-    print(f"Interactive visualization created: {output_file}")
+    print(f"Interactive visualization created: {config['output_file']}")
     print(f"Open this file in your web browser to interact with the rosettes!")
     print(f"{'='*70}")
     
@@ -260,11 +260,11 @@ def main():
     print("="*70)
     
     # Create output directory if it doesn't exist
-    os.makedirs(config.DATA_OUTPUT_DIR, exist_ok=True)
+    os.makedirs(cfg.DATA_OUTPUT_DIR, exist_ok=True)
     
     # Generate CSV filename based on image name
-    image_basename = os.path.splitext(config.IMAGE_FILE)[0]
-    csv_output_path = os.path.join(config.DATA_OUTPUT_DIR, f'{image_basename}_cell_data.csv')
+    image_basename = os.path.splitext(cfg.IMAGE_FILE)[0]
+    csv_output_path = os.path.join(cfg.DATA_OUTPUT_DIR, f'{image_basename}_cell_data.csv')
     
     # Generate CSV export using ALL vertices (3+) for complete junction data
     generate_csv_export(mask, valid_cells, all_vertices, csv_output_path)
