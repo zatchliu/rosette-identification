@@ -356,7 +356,7 @@ def create_base_visualization(img, valid_cells, cell_properties, all_vertices, m
     return base_img_base64
 
 
-def prepare_interactive_data(valid_cells, cell_properties, cell_boundaries, vertices, rosettes):
+def prepare_interactive_data(valid_cells, cell_properties, cell_boundaries, vertices, rosettes, cell_neighbors):
     """
     - Bounding box prefiltering for speed
     - Uses spatial grid to quickly find candidate neighbors,
@@ -368,6 +368,8 @@ def prepare_interactive_data(valid_cells, cell_properties, cell_boundaries, vert
         cell_boundaries: Dictionary mapping cell_id to boundary coordinates
         vertices: List of vertex dictionaries
         rosettes: List of rosette dictionaries
+        cell_neighbors: Dictionary mapping cell_id to number of neighbors (pre-calculated)
+
         
     Returns:
         Tuple of (cell_pixels, cell_data, rosette_data, cell_to_rosettes)
@@ -377,14 +379,11 @@ def prepare_interactive_data(valid_cells, cell_properties, cell_boundaries, vert
     print("\n" + "="*70)
     print("PREPARING INTERACTIVE DATA (HYBRID - BOUNDING BOX PREFILTER)")
     print("="*70)
-    
-    # Calculate neighbors with hybrid approach
-    print("Calculating cell neighbors (hybrid approach)...")
-    start = time.time()
-    cell_neighbors = calculate_cell_neighbors(valid_cells, cell_boundaries)
-    elapsed = time.time() - start
-    print(f"✓ Neighbor calculation complete in {elapsed:.1f}s ({elapsed/60:.1f} min)")
-    
+
+    # Cell_neighbors is now passed as parameter (calculated once in app.py)
+    print(f"Using pre-calculated neighbor data ({len(cell_neighbors)} cells)")
+
+
     # Calculate vertex counts
     print("Calculating cell vertices...")
     cell_vertex_count = defaultdict(int)

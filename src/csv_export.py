@@ -163,7 +163,7 @@ def count_junction_participation(vertices, valid_cells):
     return junction_counts
 
 
-def export_to_csv(detailed_properties, junction_counts, output_path):
+def export_to_csv(detailed_properties, junction_counts, cell_neighbors, output_path):
     """
     Export combined cell properties and junction counts to CSV file.
     
@@ -179,6 +179,8 @@ def export_to_csv(detailed_properties, junction_counts, output_path):
         detailed_properties: Dictionary of detailed cell properties
         junction_counts: Dictionary of junction participation counts
         output_path: Path to output CSV file
+        cell_neighbors: Dictionary mapping cell_id to number of neighbors
+
     """
     print("\n" + "="*70)
     print("EXPORTING DATA TO CSV")
@@ -207,6 +209,9 @@ def export_to_csv(detailed_properties, junction_counts, output_path):
         'filled_area',
         'euler_number',
         'feret_diameter_max',
+
+        # Neighbor Counts
+        'num_neighbors',
         
         # Junction participation counts
         'junctions_3_cell',
@@ -230,6 +235,9 @@ def export_to_csv(detailed_properties, junction_counts, output_path):
             # Add detailed properties
             row_data.update(detailed_properties[cell_id])
             
+            # Add number of neighbors
+            row_data['num_neighbors'] = cell_neighbors.get(cell_id, 0)
+
             # Add junction counts
             if cell_id in junction_counts:
                 row_data.update(junction_counts[cell_id])
@@ -245,7 +253,7 @@ def export_to_csv(detailed_properties, junction_counts, output_path):
     print(f"Total cells exported: {len(detailed_properties)}")
 
 
-def generate_csv_export(mask, valid_cells, vertices, output_path):
+def generate_csv_export(mask, valid_cells, vertices, cell_neighbors, output_path):
     """
     Main function to generate CSV export with all cell data.
     
@@ -256,6 +264,7 @@ def generate_csv_export(mask, valid_cells, vertices, output_path):
         mask: Segmentation mask array with cell labels
         valid_cells: List of valid cell IDs
         vertices: List of vertex dictionaries
+        cell_neighbors: Dictionary mapping cell_id to number of neighbors (pre-calculated)
         output_path: Path to output CSV file
     """
     # Extract detailed cell properties
@@ -265,8 +274,8 @@ def generate_csv_export(mask, valid_cells, vertices, output_path):
     junction_counts = count_junction_participation(vertices, valid_cells)
     
     # Export to CSV
-    export_to_csv(detailed_properties, junction_counts, output_path)
-    
+    export_to_csv(detailed_properties, junction_counts, cell_neighbors, output_path) 
+       
     print("\n" + "="*70)
     print("CSV EXPORT COMPLETE")
     print("="*70)

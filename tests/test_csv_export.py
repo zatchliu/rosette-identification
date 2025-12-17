@@ -19,6 +19,8 @@ from src.cell_segmentation import load_and_validate_images, detect_cells, extrac
 from src.vertex_detection import find_vertices
 from src.csv_export import generate_csv_export
 import config
+from src.rosette_detection import calculate_cell_neighbors
+
 
 
 def main():
@@ -52,10 +54,13 @@ def main():
     vertices = find_vertices(
         valid_cells, cell_boundaries, mask, config.VERTEX_RADIUS, min_cells_for_vertex=3
     )
+
+    cell_neighbors = calculate_cell_neighbors(valid_cells, cell_boundaries)
+
     
     # Generate CSV export
     csv_output_path = os.path.join(config.DATA_OUTPUT_DIR, 'test_csv_export.csv')
-    generate_csv_export(mask, valid_cells, vertices, csv_output_path)
+    generate_csv_export(mask, valid_cells, vertices, cell_neighbors, csv_output_path)
     
     # ========================================================================
     print("\n" + "="*70)
