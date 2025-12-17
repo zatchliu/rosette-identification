@@ -6,9 +6,8 @@ workflow by importing and coordinating the modular components:
 - cell_segmentation: Loads images and detects individual cells
 - vertex_detection: Finds points where multiple cells meet
 - rosette_detection: Clusters vertices and creates visualizations
+- csv_export: Exports detailed cell properties and junction counts to CSV
 
-Author: Rosette Identification Team
-Date: November 2025
 """
 
 import os
@@ -17,7 +16,10 @@ import glob
 from pathlib import Path
 from src.cell_segmentation import load_and_validate_images, detect_cells, extract_cell_boundaries
 from src.vertex_detection import find_vertices
-from src.rosette_detection import cluster_vertices, create_base_visualization, prepare_interactive_data, generate_html_visualization
+from src.rosette_detection import cluster_vertices, create_base_visualization, prepare_interactive_data, generate_html_visualization, calculate_cell_neighbors
+from src.csv_export import generate_csv_export
+import config as cfg
+import os
 
 # ============================================================================
 # DEFAULT PARAMETERS
@@ -265,6 +267,7 @@ def main():
     Main execution function for rosette detection and visualization.
     
     Supports both single image processing and batch processing of folders.
+    7. Export cell data and junction counts to CSV
     """
     # Get user input
     config = get_user_input()
@@ -297,74 +300,136 @@ def main():
     
     print("\nStarting analysis...")
     
-    if config['batch_mode']:
-        # Batch processing
-        results = []
-        successful = 0
-        failed = 0
+    # Load images
+    files = [config['image_path']]
+    imgs = load_and_validate_images(files)
+    
+    if not imgs:
+        print("ERROR: Failed to load image. Exiting.")
+        sys.exit(1)
+    
+    # Detect and filter cells
+    mask, img, valid_cells, cell_properties = detect_cells(
+        imgs, config['cell_diameter'], config['min_cell_area'], config['max_cell_area']
+    )
+    
+    if len(valid_cells) == 0:
+        print("\nERROR: No valid cells detected.")
+        print("Suggestions:")
+        print("  - Try adjusting the cell diameter parameter")
+        print("  - Check min/max area thresholds")
+        print("  - Verify image quality and contrast")
+        sys.exit(1)
+    
+    # Extract cell boundaries
+    cell_boundaries = extract_cell_boundaries(valid_cells, cell_properties)
+    
+    # Find ALL vertices where cells meet (3+ cells) for comprehensive junction analysis
+    all_vertices = find_vertices(
+        valid_cells, cell_boundaries, mask, config['vertex_radius'], min_cells_for_vertex=3
+    )
+    
+    # Find rosette vertices (5+ cells) for visualization
+    rosette_vertices = find_vertices(
+        valid_cells, cell_boundaries, mask, config['vertex_radius'], config['min_rosette_cells']
+    )
+  
+    # Cluster nearby vertices into rosettes
+    rosettes = cluster_vertices(rosette_vertices, config['vertex_radius'], config['min_rosette_cells'])
+    
+    num_rosettes = len(rosettes)
+    
+    # Print results summary
+    print("\n" + "="*70)
+    print("ROSETTE DETECTION RESULTS")
+    print("="*70)
+    print(f"Total cells detected: {len(valid_cells)}")
+    print(f"Total rosettes found: {num_rosettes}")
+    print("="*70 + "\n")
+    
+    if num_rosettes > 0:
+        print("Rosette Details:")
+        print("-" * 80)
+        print(f"{'#':<5} {'Center (x,y)':<20} {'Num Cells':<12} {'Cell IDs':<30}")
+        print("-" * 80)
         
-        for idx, image_path in enumerate(config['image_paths'], 1):
-            print(f"\n[{idx}/{len(config['image_paths'])}]", end=" ")
-            
-            # Generate output filename
-            base_name = Path(image_path).stem
-            output_file = os.path.join(config['output_path'], f"{base_name}_rosette_viewer.html")
-            
-            try:
-                result = process_single_image(image_path, output_file, config)
-                results.append(result)
-                
-                if result['success']:
-                    successful += 1
-                else:
-                    failed += 1
-                    
-            except Exception as e:
-                print(f"ERROR processing {os.path.basename(image_path)}: {str(e)}")
-                results.append({'success': False, 'error': str(e)})
-                failed += 1
-        
-        # Print summary
-        print("\n" + "="*70)
-        print("BATCH PROCESSING SUMMARY")
-        print("="*70)
-        print(f"Total images: {len(config['image_paths'])}")
-        print(f"Successful: {successful}")
-        print(f"Failed: {failed}")
-        print(f"\nOutput folder: {config['output_path']}")
-        print("="*70 + "\n")
-        
+        for idx, rosette in enumerate(rosettes, 1):
+            cell_ids_str = str(rosette['cells'][:5])  # Show first 5 cell IDs
+            if len(rosette['cells']) > 5:
+                cell_ids_str = cell_ids_str[:-1] + ", ...]"
+            print(f"{idx:<5} {str(rosette['location']):<20} {rosette['num_cells']:<12} {cell_ids_str:<30}")
     else:
-        # Single file processing
-        try:
-            result = process_single_image(
-                config['input_path'], 
-                config['output_path'], 
-                config
-            )
-            
-            if result['success']:
-                print("\n" + "="*70)
-                print("ROSETTE DETECTION RESULTS")
-                print("="*70)
-                print(f"Total cells detected: {result['num_cells']}")
-                print(f"Total rosettes found: {result['num_rosettes']}")
-                print(f"\n✓ SUCCESS! Interactive visualization created: {result['output_file']}")
-                print(f"  Open this file in your web browser to interact with the rosettes!")
-                print("="*70 + "\n")
-            else:
-                print(f"\n✗ Processing failed: {result.get('error', 'Unknown error')}")
-                
-                retry = input("\nWould you like to run again with different parameters? (y/n): ").strip().lower()
-                if retry == 'y':
-                    main()
-                    return
-                    
-        except Exception as e:
-            print(f"\n\nERROR: An unexpected error occurred:")
-            print(f"  {str(e)}")
-            print("\nPlease check your input file and parameters.")
-            sys.exit(1)
+        print("⚠ No rosettes found.")
+        print("\nSuggestions:")
+        print(f"  - Try decreasing min-rosette-cells (current: {config['min_rosette_cells']})")
+        print(f"  - Try increasing vertex-radius (current: {config['vertex_radius']})")
+        print(f"  - Adjust cell diameter for better detection (current: {config['cell_diameter']})")
+        
+        retry = input("\nWould you like to run again with different parameters? (y/n): ").strip().lower()
+        if retry == 'y':
+            print("\n" + "="*70)
+            print("Restarting analysis...")
+            print("="*70)
+            main()
+            return
+    
+    # Create interactive visualization
+    print("\n" + "="*70)
+    print("STEP 5: CREATING INTERACTIVE VISUALIZATION")
+    print("="*70)
+    
+    # Generate base visualization image
+    base_img_base64 = create_base_visualization(img, valid_cells, cell_properties, rosettes)
+    
+    # Prepare data for JavaScript (includes all cells and their properties)
+
+    # Calculate cell neighbors once (used for both visualization and CSV export)
+    print("\nCalculating cell neighbors...")
+    cell_neighbors = calculate_cell_neighbors(valid_cells, cell_boundaries)
+    
+    # Prepare data for JavaScript (includes all cells and their properties)
+    print("Creating pixel-to-cell mapping and calculating cell properties...")
+    cell_pixels, cell_data, rosette_data, cell_to_rosettes = prepare_interactive_data(
+        valid_cells, cell_properties, cell_boundaries, all_vertices, rosettes, cell_neighbors
+    )
+    
+    print(f"Prepared data for {len(cell_pixels)} total cells")
+    print(f"  - Cells in rosettes: {len([c for c in cell_data.values() if c['in_rosette']])}")
+    print(f"  - Cells not in rosettes: {len([c for c in cell_data.values() if not c['in_rosette']])}")
+    
+    # Generate HTML file
+    html_content = generate_html_visualization(
+        base_img_base64, cell_pixels, cell_data, rosette_data, cell_to_rosettes,
+        len(valid_cells), num_rosettes
+    )
+    
+    # Save HTML file
+    with open(config['output_file'], 'w') as f:
+        f.write(html_content)
+    
+    print(f"\n{'='*70}")
+    print(f"Interactive visualization created: {config['output_file']}")
+    print(f"Open this file in your web browser to interact with the rosettes!")
+    print(f"{'='*70}")
+    
+    # Export data to CSV
+    print("\n" + "="*70)
+    print("STEP 6: EXPORTING DATA TO CSV")
+    print("="*70)
+    
+    # Create output directory if it doesn't exist
+    os.makedirs(cfg.DATA_OUTPUT_DIR, exist_ok=True)
+    
+    # Generate CSV filename based on image name
+    image_basename = os.path.splitext(cfg.IMAGE_FILE)[0]
+    csv_output_path = os.path.join(cfg.DATA_OUTPUT_DIR, f'{image_basename}_cell_data.csv')
+    
+    # Generate CSV export using ALL vertices (3+) for complete junction data
+    generate_csv_export(mask, valid_cells, all_vertices, cell_neighbors, csv_output_path)
+
+    print(f"\n{'='*70}")
+    print(f"CSV export created: {csv_output_path}")
+    print(f"{'='*70}")
 
 
 # Execute main function

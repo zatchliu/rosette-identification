@@ -1,5 +1,5 @@
 # Rosette Identification
-### **We are using 2 grace days for milestone 3**
+### **We are using 5 grace days for milestone 5**
 
 This is a project for COMP 333 in collaboration with the Mitchel lab. 
 
@@ -32,9 +32,9 @@ This toolkit automatically detects and identifies **rosettes** in microscopy ima
 ## System Requirements
 
 ### All Users Need:
-- **Python 3.8 or newer** installed on your computer
+- **Python 3.10 or 3.11** installed on your computer
   - To check if you have Python: Open Terminal (Mac) or Command Prompt (Windows) and type `python --version`
-  - If you don't have Python, download it from [python.org](https://www.python.org/downloads/)
+  - If you don't have Python, download it from [python.org]([https://www.python.org/downloads/](https://www.python.org/downloads/release/python-3110/))
 
 ### GPU Support (for faster processing):
 - **macOS with M1/M2/M3 chip**: GPU support is available automatically
@@ -61,16 +61,21 @@ Instead of typing folder paths, let's copy the path from Finder:
 1. Open **Finder**
 2. Navigate to where you want to put the project (Documents, Desktop, etc.)
 3. Right-click (or Control + Click) on the folder
-4. Hold down the **Option** key (you'll see "Copy" change to "Copy as Pathname")
+4. Hold down the **Option** key on your keyboard (you'll see "Copy" change to "Copy as Pathname")
 5. Click **Copy as Pathname**
 6. Go back to Terminal and type `cd ` (with a space after cd)
 7. Press `Command + V` to paste the path
 8. Press Enter
 
-**Example:** If you copied your Documents folder, you'll see something like:
+**Example:** If you copied your Documents folder, you'll see something like this before you press enter:
 ```bash
 cd /Users/yourname/Documents
 ```
+and something like this after you hit enter: 
+```bash
+braedenfalzarano@Braedens-MacBook-Pro-7 Documents % 
+```
+**Note:** It won't say exactly "braedenfalzarano@Braedens-MacBook-Pro-7", but it should say something identifying your machine. This is not important or relevant to the previous commands that you ran and should stay the same throughout your use of the terminal.
 
 #### Step 3: Clone (Download) This Project
 
@@ -83,11 +88,15 @@ cd rosette-identification
 
 **Note:** YOUR-USERNAME is your GitHub username
 
+**Additional Resources:**
+- [Installing and setting up GitHub](https://docs.github.com/en/get-started/git-basics/set-up-git)
+- [Cloning a Repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+
 #### Step 4: Create a Virtual Environment
 A virtual environment is like a separate workspace for this project.
 
 ```bash
-python3 -m venv rosette
+python3.11 -m venv rosette
 ```
 
 This creates a virtual environment called `rosette` that contains all the software this project needs.
@@ -102,12 +111,17 @@ You'll see `(rosette)` appear at the start of your command line. This means you'
 #### Step 6: Install Required Software
 
 ```bash
-# Install opencv first
-python -m pip install -U pip wheel setuptools
-python -m pip install --only-binary=:all: "opencv-python-headless==4.10.0.84"
+# Check your Python version
+python --version
+# If it prints "Python 3.11.SOME_NUMBER," you are all set and ready to proceed
+# If not, you may need to check your Python install
 
 # Upgrade pip
 pip install --upgrade pip
+
+# Install opencv first
+python -m pip install -U pip wheel setuptools
+python -m pip install --only-binary=:all: "opencv-python-headless==4.10.0.84"
 
 # Install PyTorch
 pip install torch torchvision
@@ -118,18 +132,19 @@ pip install 'cellpose[gui]'
 # Install other required packages
 pip install numpy==1.24.3 scipy==1.11.4 matplotlib==3.8.2 Pillow==10.1.0
 
-# To avoid MPS Fallback error (this is necessary)
-export PYTORCH_ENABLE_MPS_FALLBACK=1
+pip install skimage
+pip install pandas
 ```
 
-This may take a few minutes to download and install everything.
+This may take a few minutes to download and install everything. If it proceeds without any red error messages, you should be all set to go.
 
-#### Step 7: Verify Installation
+#### Step 7: Check for GPU Compatibility
 ```bash
 python -c "from cellpose import core; print(f'GPU available: {core.use_gpu()}')"
 ```
 
-You should see: `GPU available: True`
+If you see: `GPU available: True`, your system can use GPUs to increase processing speed.
+If not, the code will still run, but may take longer due to using CPUs rather than GPUs.
 
 **Installation complete!** You can now skip to **Running the Rosette Detection**.
 
@@ -160,7 +175,7 @@ cd rosette-identification
 
 
 #### Step 4: Create a Virtual Environment using miniconda
-Link to miniconda installation instrutions [here](https://www.anaconda.com/docs/getting-started/miniconda/install)
+Link to miniconda installation instructions [here](https://www.anaconda.com/docs/getting-started/miniconda/install)
 
 ```cmd
 conda create -n rosette python=3.10 -y
@@ -189,9 +204,8 @@ pip install "cellpose[gui]"
 
 # Install other packages
 pip install numpy==1.24.3 scipy==1.11.4 matplotlib==3.8.2 Pillow==10.1.0
-
-# To avoid MPS Fallback error (this is necessary)
-export PYTORCH_ENABLE_MPS_FALLBACK=1
+pip install skimage
+pip install pandas
 ```
 
 This may take a few minutes to download and install everything.
@@ -201,9 +215,9 @@ This may take a few minutes to download and install everything.
 python -c "from cellpose import core; print(f'GPU available: {core.use_gpu()}')"
 ```
 
-You should see: `GPU available: False`
+You will likely see: `GPU available: False`
 
-This is normal for Windows - it will use CPU mode.
+This is normal for Windows - it will use CPU mode as stated earlier.
 
 **Installation complete!** Continue to the next section.
 
@@ -224,20 +238,99 @@ source rosette/bin/activate
 ```cmd
 rosette\Scripts\activate
 ```
+### Step 2: Ensure images are in data folder
 
-### Step 2: Run the Detection
+All the images you want to process into the data folder in the repository
+
+There is already an image 'test_image_1.png' provided in the repo
+
+### Step 3: Run the Detection
 
 **Mac:**
 ```bash
+# To avoid MPS Fallback error (this is necessary on macOS)
+export PYTORCH_ENABLE_MPS_FALLBACK=1
+
 python app.py
 ```
 
 **Windows:**
 ```cmd
+# To avoid MPS Fallback error (just to be safe on Windows)
+export PYTORCH_ENABLE_MPS_FALLBACK=1
+
 python app.py
 ```
 
-### Step 3: Wait for Processing
+### Step 3.5: Follow the Interactive Prompts
+
+The program will guide you through the detection process with a series of prompts:
+
+#### 3.5a. Select Your Image
+```
+Enter the path to your image file: 
+```
+
+**Options:**
+- Type the full path to your image (e.g., `data/test_image_1.png`)
+- Drag and drop the file into the terminal (works on most systems)
+- Use a relative path from the project directory
+
+**Example:**
+```
+Enter the path to your image file: data/my_cells.png
+✓ Found image: data/my_cells.png
+```
+
+#### 3.5b. Customize Parameters (Optional)
+
+You can press **Enter** to accept a default for any of the prompts
+
+```
+Would you like to customize detection parameters? (y/n, default: n):
+```
+
+- Type `n` and then Press **Enter** or to use default parameters (recommended for first-time users)
+- Type `y` to customize cell diameter, area thresholds, and vertex radius
+
+**If you choose to customize, you'll see:**
+```
+Enter custom parameters (press Enter to use default):
+  Cell diameter in pixels (default: 30): 
+  Minimum cell area in pixels (default: 100): 
+  Maximum cell area in pixels (default: 5000): 
+  Vertex search radius in pixels (default: 15): 
+  Minimum cells for rosette (default: 5): 
+```
+
+#### 3.5c. Choose Output Filename
+```
+Enter output HTML filename (default: interactive_rosette_viewer.html):
+```
+
+- Type a custom name (e.g., `my_results.html`) and then Press **Enter**
+
+#### 3.5d. Confirm and Run
+```
+======================================================================
+ROSETTE DETECTION CONFIGURATION
+======================================================================
+Input image: data/my_cells.png
+Output file: interactive_rosette_viewer.html
+Cell diameter: 30 pixels
+Cell area range: 100 - 5000 pixels
+Vertex radius: 15 pixels
+Min cells for rosette: 5
+======================================================================
+
+Proceed with analysis? (y/n, default: y):
+```
+
+- Type `y` and then press **Enter** or to start the analysis
+- Type `n` and then press **Enter** to cancel
+
+
+### Step 4: Wait for Processing
 
 You'll see progress messages like:
 ```
@@ -250,26 +343,50 @@ Valid cells (after size filtering): 1354
 ==================================================================
 STEP 2: FINDING CELL BOUNDARIES AND CONTACT POINTS
 ==================================================================
+Extracted boundaries for 1354 cells
+
+==================================================================
+STEP 3: IDENTIFYING ALL VERTICES WHERE CELLS MEET
+==================================================================
 ...
 ```
 
 **Processing time:**
-- Small images (< 1000 cells): 1-3 minutes
+- Small images (< 1000 cells): ~4 minutes
 - Large images (> 1000 cells): 5-10 minutes
 - Mac with GPU: Faster
 - Windows with CPU: Slower (but it works!)
 
-### Step 4: Open the Output
+### Step 5: View Your Results
 
 When processing completes, you'll see:
 ```
+======================================================================
 Interactive visualization created: interactive_rosette_viewer.html
 Open this file in your web browser to interact with the rosettes!
+======================================================================
+
+======================================================================
+CSV export created: output/data/my_cells_cell_data.csv
+======================================================================
 ```
 
-1. Look in the `rosette-identification` folder
-2. Find the file `interactive_rosette_viewer.html`
-3. Double-click to open it in your web browser (Chrome, Firefox, Safari, Edge, etc)
+**Two outputs are created:**
+
+1. **Interactive HTML Visualization** (`rosette-identification/interactive_rosette_viewer.html`)
+   - Can be found in the `rosette-identification` folder on your computer
+   - Find the file `name_of_file.html`
+   - Double-click to open it in your web browser (Chrome, Firefox, Safari, Edge, etc)
+   - Hover over cells to see properties
+   - Click to remove/restore rosettes
+
+2. **CSV Data File** (`output/data/{image_name}_cell_data.csv`)
+   - Contains detailed cell properties
+   - Includes morphological measurements
+   - Shows junction participation counts
+   - Lists number of neighbors for each cell
+   - Can be found by going to the folder `rosette-identification/output/data/` folder on your computer
+   - Open in Excel, Google Sheets, or any CSV reader
 
 ---
 
@@ -313,6 +430,31 @@ Rosette Details:
 - **Center (x,y)**: Pixel coordinates of the rosette center
 - **Num Cells**: How many cells in that rosette
 - **Cell IDs**: Which cells belong to that rosette
+
+
+---
+
+## CSV Data Export
+
+### What is Exported?
+
+In addition to the interactive visualization, the program automatically generates a detailed CSV file containing comprehensive data for every detected cell.
+
+**Output Location**: `output/data/{image_name}_cell_data.csv`
+
+**For each cell, the CSV includes:**
+- **Morphological Properties**: Area, perimeter, shape metrics (eccentricity, solidity, etc.)
+- **Location Data**: Centroid coordinates, orientation
+- **Junction Counts**: How many 3-cell, 4-cell, 5-cell, 6-cell, 7-cell, and 8+ cell junctions each cell participates in
+
+### Testing CSV Export
+
+To test the CSV export feature independently:
+```bash
+python tests/test_csv_export.py
+```
+
+This will generate a test CSV and display summary statistics.
 
 ---
 
