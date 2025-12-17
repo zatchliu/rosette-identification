@@ -204,6 +204,8 @@ pip install "cellpose[gui]"
 
 # Install other packages
 pip install numpy==1.24.3 scipy==1.11.4 matplotlib==3.8.2 Pillow==10.1.0
+pip install skimage
+pip install pandas
 ```
 
 This may take a few minutes to download and install everything.
@@ -260,6 +262,74 @@ export PYTORCH_ENABLE_MPS_FALLBACK=1
 python app.py
 ```
 
+### Step 3.5: Follow the Interactive Prompts
+
+The program will guide you through the detection process with a series of prompts:
+
+#### 3.5a. Select Your Image
+```
+Enter the path to your image file: 
+```
+
+**Options:**
+- Type the full path to your image (e.g., `data/test_image_1.png`)
+- Drag and drop the file into the terminal (works on most systems)
+- Use a relative path from the project directory
+
+**Example:**
+```
+Enter the path to your image file: data/my_cells.png
+✓ Found image: data/my_cells.png
+```
+
+#### 3.5b. Customize Parameters (Optional)
+
+You can press **Enter** to accept a default for any of the prompts
+
+```
+Would you like to customize detection parameters? (y/n, default: n):
+```
+
+- Type `n` and then Press **Enter** or to use default parameters (recommended for first-time users)
+- Type `y` to customize cell diameter, area thresholds, and vertex radius
+
+**If you choose to customize, you'll see:**
+```
+Enter custom parameters (press Enter to use default):
+  Cell diameter in pixels (default: 30): 
+  Minimum cell area in pixels (default: 100): 
+  Maximum cell area in pixels (default: 5000): 
+  Vertex search radius in pixels (default: 15): 
+  Minimum cells for rosette (default: 5): 
+```
+
+#### 3.5c. Choose Output Filename
+```
+Enter output HTML filename (default: interactive_rosette_viewer.html):
+```
+
+- Type a custom name (e.g., `my_results.html`) and then Press **Enter**
+
+#### 3.5d. Confirm and Run
+```
+======================================================================
+ROSETTE DETECTION CONFIGURATION
+======================================================================
+Input image: data/my_cells.png
+Output file: interactive_rosette_viewer.html
+Cell diameter: 30 pixels
+Cell area range: 100 - 5000 pixels
+Vertex radius: 15 pixels
+Min cells for rosette: 5
+======================================================================
+
+Proceed with analysis? (y/n, default: y):
+```
+
+- Type `y` and then press **Enter** or to start the analysis
+- Type `n` and then press **Enter** to cancel
+
+
 ### Step 4: Wait for Processing
 
 You'll see progress messages like:
@@ -273,6 +343,11 @@ Valid cells (after size filtering): 1354
 ==================================================================
 STEP 2: FINDING CELL BOUNDARIES AND CONTACT POINTS
 ==================================================================
+Extracted boundaries for 1354 cells
+
+==================================================================
+STEP 3: IDENTIFYING ALL VERTICES WHERE CELLS MEET
+==================================================================
 ...
 ```
 
@@ -282,17 +357,36 @@ STEP 2: FINDING CELL BOUNDARIES AND CONTACT POINTS
 - Mac with GPU: Faster
 - Windows with CPU: Slower (but it works!)
 
-### Step 5: Open the Output
+### Step 5: View Your Results
 
 When processing completes, you'll see:
 ```
+======================================================================
 Interactive visualization created: interactive_rosette_viewer.html
 Open this file in your web browser to interact with the rosettes!
+======================================================================
+
+======================================================================
+CSV export created: output/data/my_cells_cell_data.csv
+======================================================================
 ```
 
-1. Look in the `rosette-identification` folder
-2. Find the file `interactive_rosette_viewer.html`
-3. Double-click to open it in your web browser (Chrome, Firefox, Safari, Edge, etc)
+**Two outputs are created:**
+
+1. **Interactive HTML Visualization** (`rosette-identification/interactive_rosette_viewer.html`)
+   - Can be found in the `rosette-identification` folder on your computer
+   - Find the file `name_of_file.html`
+   - Double-click to open it in your web browser (Chrome, Firefox, Safari, Edge, etc)
+   - Hover over cells to see properties
+   - Click to remove/restore rosettes
+
+2. **CSV Data File** (`output/data/{image_name}_cell_data.csv`)
+   - Contains detailed cell properties
+   - Includes morphological measurements
+   - Shows junction participation counts
+   - Lists number of neighbors for each cell
+   - Can be found by going to the folder `rosette-identification/output/data/` folder on your computer
+   - Open in Excel, Google Sheets, or any CSV reader
 
 ---
 
