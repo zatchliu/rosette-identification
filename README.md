@@ -61,7 +61,7 @@ Instead of typing folder paths, let's copy the path from Finder:
 1. Open **Finder**
 2. Navigate to where you want to put the project (Documents, Desktop, etc.)
 3. Right-click (or Control + Click) on the folder
-4. Hold down the **Option** key (you'll see "Copy" change to "Copy as Pathname")
+4. Hold down the **Option** key on your keyboard (you'll see "Copy" change to "Copy as Pathname")
 5. Click **Copy as Pathname**
 6. Go back to Terminal and type `cd ` (with a space after cd)
 7. Press `Command + V` to paste the path
@@ -233,8 +233,13 @@ source rosette/bin/activate
 ```cmd
 rosette\Scripts\activate
 ```
+### Step 2: Ensure images are in data folder
 
-### Step 2: Run the Detection
+All the images you want to process into the data folder in the repository
+
+There is already an image 'test_image_1.png' provided in the repo
+
+### Step 3: Run the Detection
 
 **Mac:**
 ```bash
@@ -252,7 +257,7 @@ export PYTORCH_ENABLE_MPS_FALLBACK=1
 python app.py
 ```
 
-### Step 3: Wait for Processing
+### Step 4: Wait for Processing
 
 You'll see progress messages like:
 ```
@@ -274,7 +279,7 @@ STEP 2: FINDING CELL BOUNDARIES AND CONTACT POINTS
 - Mac with GPU: Faster
 - Windows with CPU: Slower (but it works!)
 
-### Step 4: Open the Output
+### Step 5: Open the Output
 
 When processing completes, you'll see:
 ```
