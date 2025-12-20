@@ -10,6 +10,4 @@ Test Modules:
 - test_rosette_detection: Validates complete rosette detection
 - test_csv_export: Validates the csv export process after running the rosette detection pipeline
 
-Author: Rosette Identification Team
-Date: November 2025
 """
