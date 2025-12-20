@@ -677,8 +677,11 @@ rosette-identification/             # root of the directory
 │   ├── test_cell_segmentation.py   # Test cell detection
 │   ├── test_vertex_detection.py    # Test vertex detection
 │   └── test_rosette_detection.py   # Test complete pipeline
-├── data/                           # There are a few test input images here
-└── output_folder/                         # Generated outputs
-    ├── html/             # Static image outputs
-    └── csv/                       # Text data outputs
+├── data/                           # There is an image and a folder here to test with
+└── output/                         # Generated outputs
+│   ├── data/                       # Text data outputs
+│   └── visualizations/             # Static image outputs
+└── Ecad_results_folfer/            # Example output of batch processed folder
+    ├── csv/                        # csv data file outputs
+    └── html/                       # interactive html file outputs
 ```
