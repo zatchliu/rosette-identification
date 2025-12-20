@@ -326,7 +326,7 @@ Enter custom parameters (press Enter to use default):
 ```
 #### 3.5d. Choose Output Path
 ```
-Enter output HTML filename (default: interactive_rosette_viewer.html):
+Enter output directory (default: current directory):
 ```
 
 #### 3.5e. Choose Output Filename (Your HTML and CSV output files will be named this)
