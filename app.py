@@ -163,20 +163,30 @@ def get_user_input():
         output_path = output_folder
     else:
         print("\n" + "-"*70)
-        output_input = input("\nEnter output HTML filename (default: interactive_rosette_viewer.html): ").strip()
-        output_file = output_input if output_input else 'interactive_rosette_viewer.html'
+        # Ask for output directory
+        output_dir_input = input("\nEnter output directory (default: current directory): ").strip()
+        output_dir = output_dir_input if output_dir_input else '.'
+        
+        # Create output directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Ask for HTML filename
+        output_file_input = input("Enter output HTML filename (default: interactive_rosette_viewer.html): ").strip()
+        output_file = output_file_input if output_file_input else 'interactive_rosette_viewer.html'
         
         # Ensure .html extension
         if not output_file.endswith('.html'):
             output_file += '.html'
         
-        output_path = output_file
+        # Combine directory and filename
+        output_path = os.path.join(output_dir, output_file)
     
     return {
         'batch_mode': batch_mode,
         'input_path': input_path,
         'image_paths': image_paths,
         'output_path': output_path,
+        'output_dir': output_dir if not batch_mode else None,
         'cell_diameter': cell_diameter,
         'min_cell_area': min_cell_area,
         'max_cell_area': max_cell_area,
@@ -185,7 +195,7 @@ def get_user_input():
     }
 
 
-def process_single_image(image_path, output_html, output_csv, config):
+def process_single_image(image_path, output_html, output_csv, params):
     """
     Process a single image and generate HTML visualization and CSV data.
     
@@ -193,7 +203,7 @@ def process_single_image(image_path, output_html, output_csv, config):
         image_path: Path to the image file
         output_html: Path for the output HTML file
         output_csv: Path for the output CSV file
-        config: Dictionary with processing parameters
+        params: Dictionary with processing parameters (cell_diameter, min_cell_area, etc.)
         
     Returns:
         Dictionary with processing results
@@ -211,7 +221,7 @@ def process_single_image(image_path, output_html, output_csv, config):
     
     # Detect and filter cells
     mask, img, valid_cells, cell_properties = detect_cells(
-        imgs, config['cell_diameter'], config['min_cell_area'], config['max_cell_area']
+        imgs, params['cell_diameter'], params['min_cell_area'], params['max_cell_area']
     )
     
     if len(valid_cells) == 0:
@@ -223,16 +233,16 @@ def process_single_image(image_path, output_html, output_csv, config):
     
     # Find ALL vertices where cells meet (3+ cells) for comprehensive junction analysis
     all_vertices = find_vertices(
-        valid_cells, cell_boundaries, mask, config['vertex_radius'], min_cells_for_vertex=3
+        valid_cells, cell_boundaries, mask, params['vertex_radius'], min_cells_for_vertex=3
     )
     
     # Find rosette vertices (5+ cells) for visualization
     rosette_vertices = find_vertices(
-        valid_cells, cell_boundaries, mask, config['vertex_radius'], config['min_rosette_cells']
+        valid_cells, cell_boundaries, mask, params['vertex_radius'], params['min_rosette_cells']
     )
     
     # Cluster nearby vertices into rosettes
-    rosettes = cluster_vertices(rosette_vertices, config['vertex_radius'], config['min_rosette_cells'])
+    rosettes = cluster_vertices(rosette_vertices, params['vertex_radius'], params['min_rosette_cells'])
     
     num_rosettes = len(rosettes)
     
@@ -298,7 +308,8 @@ def main():
     else:
         print(f"Mode: Single image")
         print(f"Input image: {config['input_path']}")
-        print(f"Output file: {config['output_path']}")
+        print(f"Output directory: {config['output_dir']}")
+        print(f"Output HTML file: {os.path.basename(config['output_path'])}")
     
     print(f"Cell diameter: {config['cell_diameter']} pixels")
     print(f"Cell area range: {config['min_cell_area']} - {config['max_cell_area']} pixels")
@@ -361,11 +372,12 @@ def main():
         # SINGLE FILE PROCESSING MODE
         # ====================================================================
         
-        # Generate CSV filename based on HTML filename
+        # Generate CSV filename in the same directory as the HTML file
+        output_dir = os.path.dirname(config['output_path'])
+        if not output_dir:  # If no directory (current dir), use '.'
+            output_dir = '.'
         base_name = Path(config['output_path']).stem
-        csv_dir = 'output/data'
-        os.makedirs(csv_dir, exist_ok=True)
-        csv_output_path = os.path.join(csv_dir, f'{base_name}_cell_data.csv')
+        csv_output_path = os.path.join(output_dir, f'{base_name}_cell_data.csv')
         
         try:
             result = process_single_image(
@@ -404,6 +416,8 @@ def main():
         except Exception as e:
             print(f"\n\nERROR: An unexpected error occurred:")
             print(f"  {str(e)}")
+            import traceback
+            traceback.print_exc()
             print("\nPlease check your input file and parameters.")
             sys.exit(1)
 
@@ -418,5 +432,7 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n\nERROR: An unexpected error occurred:")
         print(f"  {str(e)}")
+        import traceback
+        traceback.print_exc()
         print("\nPlease check your input file and parameters.")
         sys.exit(1)
