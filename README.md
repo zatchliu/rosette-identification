@@ -388,7 +388,7 @@ If at any time you want to abort the current processing and start over, enter `C
 
 ### Step 5: View Your Results
 
-When processing completes, you'll see:
+When processing completes, you'll see something like this (it may look slightly different if you chose batch processing, but in this case, you can find all of the output files in the directory name you entered in step 3.5d under "Running the Rosette Detection"):
 ```
 ======================================================================
 Interactive visualization created: interactive_rosette_viewer.html
