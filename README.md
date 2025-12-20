@@ -324,15 +324,20 @@ Enter custom parameters (press Enter to use default):
   Vertex search radius in pixels (default: 15): 
   Minimum cells for rosette (default: 5): 
 ```
+#### 3.5d. Choose Output Path
+```
+Enter output HTML filename (default: interactive_rosette_viewer.html):
+```
 
-#### 3.5d. Choose Output Filename
+#### 3.5e. Choose Output Filename (Your HTML and CSV output files will be named this)
+**Note** - If you chose batch upload, then the HTML and CSV outputs files will have the name of the raw image files in the Folder you are processing
 ```
 Enter output HTML filename (default: interactive_rosette_viewer.html):
 ```
 
 - Type a custom name (e.g., `my_results.html`) and then Press **Enter**
 
-#### 3.5e. Confirm and Run
+#### 3.5f. Confirm and Run
 ```
 ======================================================================
 ROSETTE DETECTION CONFIGURATION
@@ -372,6 +377,8 @@ STEP 3: IDENTIFYING ALL VERTICES WHERE CELLS MEET
 ==================================================================
 ...
 ```
+If at any time you want to abort the current processing and start over, enter `Ctrl + C` simultaneously on your keyboard, and this will stop the processing.
+
 
 **Processing time:**
 - Small images (< 1000 cells): ~4 minutes
