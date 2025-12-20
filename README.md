@@ -269,9 +269,28 @@ python app.py
 
 The program will guide you through the detection process with a series of prompts:
 
-#### 3.5a. Select Your Image
+#### 3.5a. Select Single or Batch Processing
+```
+Processing mode:
+  1. Single image file
+  2. Batch process folder
+
+Select mode (1 or 2, default: 1):
+```
+- Type `1` and then Press **Enter** to use single image processing
+- Type `2` to then Press **Enter** to use batch processing
+
+
+#### 3.5b. Select Your Image or Folder
+
+If you selected `1. Single image file`
 ```
 Enter the path to your image file: 
+```
+
+If you selected `2. Batch process folder`
+```
+Enter the path to your folder: 
 ```
 
 **Options:**
@@ -285,7 +304,7 @@ Enter the path to your image file: data/my_cells.png
 ✓ Found image: data/my_cells.png
 ```
 
-#### 3.5b. Customize Parameters (Optional)
+#### 3.5c. Customize Parameters (Optional)
 
 You can press **Enter** to accept a default for any of the prompts
 
@@ -306,14 +325,14 @@ Enter custom parameters (press Enter to use default):
   Minimum cells for rosette (default: 5): 
 ```
 
-#### 3.5c. Choose Output Filename
+#### 3.5d. Choose Output Filename
 ```
 Enter output HTML filename (default: interactive_rosette_viewer.html):
 ```
 
 - Type a custom name (e.g., `my_results.html`) and then Press **Enter**
 
-#### 3.5d. Confirm and Run
+#### 3.5e. Confirm and Run
 ```
 ======================================================================
 ROSETTE DETECTION CONFIGURATION
