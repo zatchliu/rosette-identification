@@ -391,30 +391,28 @@ If at any time you want to abort the current processing and start over, enter `C
 When processing completes, you'll see something like this (it may look slightly different if you chose batch processing, but in this case, you can find all of the output files in the directory name you entered in step 3.5d under "Running the Rosette Detection"):
 ```
 ======================================================================
-Interactive visualization created: interactive_rosette_viewer.html
+Interactive visualization created: output/html/name_of_file.html
 Open this file in your web browser to interact with the rosettes!
 ======================================================================
 
 ======================================================================
-CSV export created: output/data/my_cells_cell_data.csv
+CSV export created: output/csv/name_of_file.csv
 ======================================================================
 ```
 
 **Two outputs are created:**
 
-1. **Interactive HTML Visualization** (`rosette-identification/interactive_rosette_viewer.html`)
-   - Can be found in the `rosette-identification` folder on your computer
+1. **Interactive HTML Visualizations** (`PATH_TO_OUTPUT_FOLDER/html/name_of_file.html`)
    - Find the file `name_of_file.html`
    - Double-click to open it in your web browser (Chrome, Firefox, Safari, Edge, etc)
    - Hover over cells to see properties
    - Click to remove/restore rosettes
 
-2. **CSV Data File** (`output/data/{image_name}_cell_data.csv`)
+2. **CSV Data Files** (`PATH_TO_OUTPUT_FOLDER/csv/name_of_file.csv`)
    - Contains detailed cell properties
    - Includes morphological measurements
    - Shows junction participation counts
    - Lists number of neighbors for each cell
-   - Can be found by going to the folder `rosette-identification/output/data/` folder on your computer
    - Open in Excel, Google Sheets, or any CSV reader
 
 ---
@@ -423,7 +421,7 @@ CSV export created: output/data/my_cells_cell_data.csv
 
 ### The Interactive Visualization
 
-When you open `interactive_rosette_viewer.html`, you'll see:
+When you open `name_of_file.html`, you'll see:
 
 **Top of page:**
 - **Total Cells**: Number of individual cells detected
@@ -439,7 +437,7 @@ When you open `interactive_rosette_viewer.html`, you'll see:
 - **Hover your mouse** over any green cell
 - That cell's rosette will highlight in **orange**
 - The rosette center will get bigger and show a label (R1, R2, etc.)
-- Information box shows which cell and rosette you're looking at
+- Information box shows which cell and rosette you're looking at, as well as the area, perimeter, and number of neighbors for that cell
 
 ### Understanding the Console Output
 
@@ -469,7 +467,7 @@ Rosette Details:
 
 In addition to the interactive visualization, the program automatically generates a detailed CSV file containing comprehensive data for every detected cell.
 
-**Output Location**: `output/data/{image_name}_cell_data.csv`
+**Output Location**: `PATH_TO_OUTPUT_FOLDER/csv/name_of_file.csv`
 
 **For each cell, the CSV includes:**
 - **Morphological Properties**: Area, perimeter, shape metrics (eccentricity, solidity, etc.)
@@ -491,8 +489,6 @@ This will generate a test CSV and display summary statistics.
 
 If the detection isn't working well (finding too many or too few rosettes), you can adjust the settings.
 
-**Note:** We understand that the parameters are not tuned perfectly at the moment. This is something we plan to tweak as we move forward.
-
 ### Where to Adjust Settings
 
 Open `config.py` in a text editor. You'll see:
@@ -505,6 +501,7 @@ MAX_CELL_AREA = 5000            # Maximum area to count as valid cell (pixels)
 VERTEX_RADIUS = 15              # Search radius for cells meeting at a vertex (pixels)
 MIN_CELLS_FOR_ROSETTE = 5       # Minimum cells required to form a rosette
 ```
+Or you can adjust in the terminal (as shown earlier in Step 3.5 of "Running the Rosette Detection")
 
 ### What Each Parameter Does
 
@@ -534,8 +531,7 @@ MIN_CELLS_FOR_ROSETTE = 5       # Minimum cells required to form a rosette
 
 **MIN_CELLS_FOR_ROSETTE** (default: 5)
 - Minimum cells needed to form a rosette
-- By definition, a rosette has 5+ cells
-- You probably don't want to change this
+- By most standard definitions, a rosette has 5+ cells
 
 ### Example Adjustments
 
@@ -681,8 +677,8 @@ rosette-identification/             # root of the directory
 │   ├── test_cell_segmentation.py   # Test cell detection
 │   ├── test_vertex_detection.py    # Test vertex detection
 │   └── test_rosette_detection.py   # Test complete pipeline
-├── data/                           # Input images go here
-└── output/                         # Generated outputs
-    ├── visualizations/             # Static image outputs
-    └── data/                       # Text data outputs
+├── data/                           # There are a few test input images here
+└── output_folder/                         # Generated outputs
+    ├── html/             # Static image outputs
+    └── csv/                       # Text data outputs
 ```
